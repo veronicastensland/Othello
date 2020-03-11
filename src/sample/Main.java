@@ -10,6 +10,18 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+// TODO:
+/*
+- Implementera makeMove
+    Den ska göra ett drag och vända på alla brickor mellan brickan du lägger
+    och annan egen bricka, i horisontellt led, vertikalt led och snett (nio olika riktningar)
+- Beräkna bästa drag enligt minimax-algoritmen
+    Största antal möjliga brickor att vända = bäst
+- validMove
+    Håller reda på om draget är möjligt att göra.
+    Beginner, intermediate, or expert? *INTE PRIORITET*
+ */
+
 public class Main extends Application {
 
     int colNum = 7;
@@ -19,13 +31,6 @@ public class Main extends Application {
     Color p1Color = Color.WHITE;
     Color p2Color = Color.BLACK;
     int[][] board = new int[colNum][rowNum];
-
-
-//    private Parent createContent() {
-//        Pane root = new Pane();
-//        root.setPrefSize(1000, 800);
-//        return root;
-//    }
 
     public void drawBoard(Pane gameBoard, int[][] board) {
         for (int y = 0; y < rowNum; y++) {
