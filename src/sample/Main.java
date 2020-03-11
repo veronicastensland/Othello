@@ -24,8 +24,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    int colNum = 7;
-    int rowNum = 6;
+    int colNum = 8;
+    int rowNum = 8;
 
     int tileSize = 100;
     Color p1Color = Color.WHITE;
@@ -62,7 +62,6 @@ public class Main extends Application {
         Pane gameBoard = new Pane();
         int[][] board = new int[colNum][rowNum];
         //gameBoard.setGridLinesVisible(true);
-        gameBoard.setPrefSize(1000, 800);
 
         gameBoard.setOnMouseClicked(new EventHandler<MouseEvent>(){
             public void handle(MouseEvent e) {
@@ -81,16 +80,16 @@ public class Main extends Application {
         });
 
         // Testuppställning
-        board[0][5] = 1;
-        board[1][1] = 2;
-        board[2][1] = 1;
-        board[1][2] = 2;
+        board[3][4] = 1;
+        board[4][4] = 2;
+        board[4][3] = 1;
+        board[3][3] = 2;
 
         drawBoard(gameBoard, board);
 
 
         stage.setTitle("Connect 5 Game");
-        Scene scene = new Scene(gameBoard);
+        Scene scene = new Scene(gameBoard, 800, 800, Color.GREEN);
         stage.setScene(scene);
         stage.show();
 
