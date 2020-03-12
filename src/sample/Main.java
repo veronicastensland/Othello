@@ -16,7 +16,11 @@ import javafx.stage.Stage;
     Den ska göra ett drag och vända på alla brickor mellan brickan du lägger
     och annan egen bricka, i horisontellt led, vertikalt led och snett (nio olika riktningar)
 - Beräkna bästa drag enligt minimax-algoritmen
-    Största antal möjliga brickor att vända = bäst
+- Implementera evaluateBoard
+    Största antal möjliga brickor att vända = bäst. Å andra sidan, kanske dåligt.
+    Man bör istället dela in dom i frontier discs och interior dics,
+    sedan också ge vissa platser på planen en högre score.
+    Hörn = superbra
 - validMove
     Håller reda på om draget är möjligt att göra.
     Beginner, intermediate, or expert? *INTE PRIORITET*
@@ -80,15 +84,15 @@ public class Main extends Application {
         });
 
         // Testuppställning
-        board[3][4] = 1;
-        board[4][4] = 2;
-        board[4][3] = 1;
-        board[3][3] = 2;
+        board[3][4] = 2;
+        board[4][4] = 1;
+        board[4][3] = 2;
+        board[3][3] = 1;
 
         drawBoard(gameBoard, board);
 
 
-        stage.setTitle("Connect 5 Game");
+        stage.setTitle("Othello");
         Scene scene = new Scene(gameBoard, 800, 800, Color.GREEN);
         stage.setScene(scene);
         stage.show();
