@@ -28,18 +28,18 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    int colNum = 8;
-    int rowNum = 8;
+    private static final int COLUMNS = 8;
+    private static final int ROWS = 8;
+    private static final int TILE_SIZE = 100;
 
-    int tileSize = 100;
     Color p1Color = Color.WHITE;
     Color p2Color = Color.BLACK;
-    int[][] board = new int[colNum][rowNum];
+    int[][] board = new int[COLUMNS][ROWS];
 
     public void drawBoard(Pane gameBoard, int[][] board) {
-        for (int y = 0; y < rowNum; y++) {
-            for (int x = 0; x < colNum; x++) {
-                Rectangle tile = new Rectangle(x*tileSize, y*tileSize, tileSize, tileSize);
+        for (int y = 0; y < ROWS; y++) {
+            for (int x = 0; x < COLUMNS; x++) {
+                Rectangle tile = new Rectangle(x* TILE_SIZE, y* TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 tile.setFill(null);
                 tile.setStroke(Color.BLACK);
 
@@ -51,7 +51,7 @@ public class Main extends Application {
                         playerColor = p2Color;
                     }
 
-                    Circle c = new Circle(x * tileSize + (tileSize/2), y * tileSize + (tileSize/2), tileSize/2);
+                    Circle c = new Circle(x * TILE_SIZE + (TILE_SIZE /2), y * TILE_SIZE + (TILE_SIZE /2), TILE_SIZE /2);
                     c.setFill(playerColor);
                     gameBoard.getChildren().addAll(c);
                 }
@@ -64,8 +64,16 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception{
         // Init
         Pane gameBoard = new Pane();
-        int[][] board = new int[colNum][rowNum];
+        int[][] board = new int[COLUMNS][ROWS];
         //gameBoard.setGridLinesVisible(true);
+
+        // Testuppställning
+        board[3][4] = 2;
+        board[4][4] = 1;
+        board[4][3] = 2;
+        board[3][3] = 1;
+
+        drawBoard(gameBoard, board);
 
         gameBoard.setOnMouseClicked(new EventHandler<MouseEvent>(){
             public void handle(MouseEvent e) {
@@ -82,14 +90,6 @@ public class Main extends Application {
 
             }
         });
-
-        // Testuppställning
-        board[3][4] = 2;
-        board[4][4] = 1;
-        board[4][3] = 2;
-        board[3][3] = 1;
-
-        drawBoard(gameBoard, board);
 
 
         stage.setTitle("Othello");
