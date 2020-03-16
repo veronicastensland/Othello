@@ -31,6 +31,8 @@ public class Main extends Application {
     private static final int COLUMNS = 8;
     private static final int ROWS = 8;
     private static final int TILE_SIZE = 100;
+    private int PLAYER1 = 1;
+    private int PLAYER2 = 2;
 
     Color p1Color = Color.WHITE;
     Color p2Color = Color.BLACK;
@@ -39,19 +41,20 @@ public class Main extends Application {
     public void drawBoard(Pane gameBoard, int[][] board) {
         for (int y = 0; y < ROWS; y++) {
             for (int x = 0; x < COLUMNS; x++) {
-                Rectangle tile = new Rectangle(x* TILE_SIZE, y* TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                Rectangle tile = new Rectangle(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 tile.setFill(null);
                 tile.setStroke(Color.BLACK);
 
                 if (board[x][y] != 0) {
                     Color playerColor = null;
-                    if (board[x][y] == 1) {
+                    if (board[x][y] == PLAYER1) {
                         playerColor = p1Color;
-                    } else if (board[x][y] == 2) {
+                    } else if (board[x][y] == PLAYER2) {
                         playerColor = p2Color;
                     }
 
-                    Circle c = new Circle(x * TILE_SIZE + (TILE_SIZE /2), y * TILE_SIZE + (TILE_SIZE /2), TILE_SIZE /2);
+                    Circle c = new Circle(x * TILE_SIZE + (TILE_SIZE / 2), y * TILE_SIZE + (TILE_SIZE / 2),
+                            TILE_SIZE / 2);
                     c.setFill(playerColor);
                     gameBoard.getChildren().addAll(c);
                 }
@@ -61,54 +64,104 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception{
+    public void start(Stage stage) throws Exception {
         // Init
         Pane gameBoard = new Pane();
-        int[][] board = new int[COLUMNS][ROWS];
-        //gameBoard.setGridLinesVisible(true);
+        board = new int[COLUMNS][ROWS];
 
-        // Testuppställning
-        board[3][4] = 2;
-        board[4][4] = 1;
-        board[4][3] = 2;
-        board[3][3] = 1;
+        // Startuppställning
+        board[3][4] = PLAYER2;
+        board[4][4] = PLAYER1;
+        board[4][3] = PLAYER2;
+        board[3][3] = PLAYER1;
 
         drawBoard(gameBoard, board);
 
-        gameBoard.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        gameBoard.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent e) {
                 double posX = e.getX();
                 double posY = e.getY();
 
                 System.out.println("Pos x = " + posX + "\n" + "Pos y = " + posY);
 
-                int x = (int)Math.floor(posX/100);
-                int y = (int)Math.floor(posY/100);
+                int x = (int) Math.floor(posX / 100);
+                int y = (int) Math.floor(posY / 100);
 
-                board[x][y] = 1;
-                drawBoard(gameBoard, board);
-
+                if (validMove(x, y)) {
+                    int xx = 0, yy = 0;
+                    board[x][y] = PLAYER1;
+                    calcBestMove(xx, yy);
+                    board[xx][yy] = PLAYER2;
+                    drawBoard(gameBoard, board);
+                }
             }
         });
-
 
         stage.setTitle("Othello");
         Scene scene = new Scene(gameBoard, 800, 800, Color.GREEN);
         stage.setScene(scene);
         stage.show();
+    }
 
-//        boolean abortGame = false;
-//
-//        while(!abortGame)
-//        {
-//            // Spelare 1 lägger
-//            makeMove(player1);
-//            // Spelare 2 lägger
-//            makeMove(ai);
-//
-//            win = checkForWin(board);
-//            drawBoard(gameBoard, board);
-//        }
+    private void calcBestMove(int xx, int yy)
+    {
+        int bestx = 0;
+        int besty = 0;
+
+        // ValidMoves
+        // bestMove = MiniMax(ValidMoves);
+
+        xx = bestx;
+        yy = besty;
+    }
+
+    private boolean checkDirection(int x, int y, int ii, int jj)
+    {
+        int i = 0;
+        int j = 0;
+        boolean noWallHit = true;
+        boolean blackHit = false;
+
+        while (noWallHit)
+        {
+            i += ii;
+            j += jj;
+            int _x = x + i;
+            int _y = y + j;
+
+            if ((_x > COLUMNS - 1) || (_x <= 0) || (_y > ROWS - 1) || (_y <= 0)) {
+                return false;
+            }
+            if (board[_x][_y] == PLAYER2) {
+                blackHit = true;
+            }
+            if (board[_x][_y] == PLAYER1 && blackHit) {
+                return true;
+            }
+            if (board[_x][_y] == 0 || board[_x][_y] == PLAYER1 && !blackHit) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    // Om du kan vända någon bricka
+    private boolean validMove(int x, int y) {
+
+        for (int ii = -1; ii <= 1; ii++)
+        {
+            for (int jj = -1; jj <= 1; jj++)
+            {
+                if (!(ii == 0 && jj == 0))
+                {
+                    if (checkDirection(x, y, ii, jj))
+                        return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private boolean checkForWin(int[][] board) {
