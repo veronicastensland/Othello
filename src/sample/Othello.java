@@ -10,7 +10,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-// TODO:
 /*
 - Implementera makeMove
     Den ska göra ett drag och vända på alla brickor mellan brickan du lägger
@@ -26,8 +25,7 @@ import javafx.stage.Stage;
     Beginner, intermediate, or expert? *INTE PRIORITET*
  */
 
-public class Main extends Application {
-
+public class Othello extends Application {
     private static final int COLUMNS = 8;
     private static final int ROWS = 8;
     private static final int TILE_SIZE = 100;
@@ -64,7 +62,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         // Init
         Pane gameBoard = new Pane();
         board = new int[COLUMNS][ROWS];
@@ -103,8 +101,7 @@ public class Main extends Application {
         stage.show();
     }
 
-    private void calcBestMove(int xx, int yy)
-    {
+    private void calcBestMove(int xx, int yy) {
         int bestx = 0;
         int besty = 0;
 
@@ -115,15 +112,13 @@ public class Main extends Application {
         yy = besty;
     }
 
-    private boolean checkDirection(int x, int y, int ii, int jj)
-    {
+    public boolean checkDirection(int x, int y, int ii, int jj) {
         int i = 0;
         int j = 0;
         boolean noWallHit = true;
         boolean blackHit = false;
 
-        while (noWallHit)
-        {
+        while (noWallHit) {
             i += ii;
             j += jj;
             int _x = x + i;
@@ -147,14 +142,11 @@ public class Main extends Application {
     }
 
     // Om du kan vända någon bricka
-    private boolean validMove(int x, int y) {
+    public boolean validMove(int x, int y) {
 
-        for (int ii = -1; ii <= 1; ii++)
-        {
-            for (int jj = -1; jj <= 1; jj++)
-            {
-                if (!(ii == 0 && jj == 0))
-                {
+        for (int ii = -1; ii <= 1; ii++) {
+            for (int jj = -1; jj <= 1; jj++) {
+                if (!(ii == 0 && jj == 0)) {
                     if (checkDirection(x, y, ii, jj))
                         return true;
                 }
@@ -164,7 +156,7 @@ public class Main extends Application {
         return false;
     }
 
-    private boolean checkForWin(int[][] board) {
-        return false;
+    public static void main(String[] args) {
+        launch(args);
     }
 }

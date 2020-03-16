@@ -5,6 +5,28 @@
     "c:\\Program Files\\Java\\javafx-sdk-14\\lib\\javafx.controls.jar",
     "c:\\Program Files\\Java\\javafx-sdk-14\\lib\\javafx.fxml.jar",
     "c:\\Program Files\\Java\\javafx-sdk-14\\lib\\javafx.graphics.jar",
-    "c:\\Program Files\\Java\\javafx-sdk-14\\lib\\javafx.media.jar"
-  ]
+    "c:\\Program Files\\Java\\javafx-sdk-14\\lib\\javafx.media.jar",
+    "c:\\Program Files\\Java\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
+    "c:\\Program Files\\Java\\javafx-sdk-11.0.2\\lib\\javafx.controls.jar",
+    "c:\\Program Files\\Java\\javafx-sdk-11.0.2\\lib\\javafx.fxml.jar",
+    "c:\\Program Files\\Java\\javafx-sdk-11.0.2\\lib\\javafx.graphics.jar",
+    "c:\\Program Files\\Java\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
+    "c:\\Program Files\\Java\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
+    "c:\\Program Files\\Java\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
+    "c:\\Programs\\java\\javafx-sdk-11.0.2\\lib\\javafx-swt.jar",
+    "c:\\Programs\\java\\javafx-sdk-11.0.2\\lib\\javafx.base.jar",
+    "c:\\Programs\\java\\javafx-sdk-11.0.2\\lib\\javafx.controls.jar",
+    "c:\\Programs\\java\\javafx-sdk-11.0.2\\lib\\javafx.fxml.jar",
+    "c:\\Programs\\java\\javafx-sdk-11.0.2\\lib\\javafx.graphics.jar",
+    "c:\\Programs\\java\\javafx-sdk-11.0.2\\lib\\javafx.media.jar",
+    "c:\\Programs\\java\\javafx-sdk-11.0.2\\lib\\javafx.swing.jar",
+    "c:\\Programs\\java\\javafx-sdk-11.0.2\\lib\\javafx.web.jar",
+    "c:\\Programs\\java\\junit\\junit-4.13.jar"
+  ],
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  }
 }
