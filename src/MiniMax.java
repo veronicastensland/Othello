@@ -1,4 +1,3 @@
-package sample;
 
 class MiniMax {
     // Returns the optimal value a maximizer can obtain.

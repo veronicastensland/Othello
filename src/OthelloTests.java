@@ -1,21 +1,24 @@
-package sample;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import javafx.scene.paint.Color;
+
 import static org.junit.Assert.*;
 
 public class OthelloTests {
-  Othello game;
+  Playground game;
+  Player player;
   int score;
 
   @Before
   public void Init() {
-    game = new Othello();
+    game = new Playground();
+    player = new Player(3, Color.PINK);
   }
 
   @Test
   public void testValidMove() {
-    boolean valid = game.validMove(3, 4);
+    boolean valid = game.validMove(3, 4, player);
     assertEquals(false, valid);
   }
 }
