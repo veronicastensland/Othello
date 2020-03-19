@@ -20,14 +20,23 @@ public class OthelloTests {
 
   @Test
   public void testValidMove() {
-    boolean valid = game.validMove(3, 4, player);
+    Position pos = new Position(3, 4);
+    boolean valid = game.validMove(pos, player);
     assertEquals(false, valid);
   }
 
   @Test
-  public void AfterInit_CheckValidMoves() {
+  public void AfterInit_GetValidMoves() {
     game.Init();
     List<Position> list = game.GetValidMoves(game.board, game.HumanPlayer);
     assertTrue(list != null);
   }
+
+  @Test
+  public void AfterInit_ScoreBoard() {
+    game.Init();
+    int score = game.calculateScore(game.board, game.HumanPlayer);
+    assertTrue(score == 2);
+  }
+
 }

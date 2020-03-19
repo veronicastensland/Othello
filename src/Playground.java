@@ -41,15 +41,15 @@ public class Playground {
     int bestx = 0;
     int besty = 0;
     final int maxHeightGameTree = 10;
-    int[] scores;
     Position bestMove = new Position(bestx, besty);
 
     List<Position> validMoves = GetValidMoves(board, player);
+    int[] scores = new int[validMoves.size()];
 
     for (int i = 0; i < validMoves.size(); i++) {
       int[][] tempBoard = board;
       playMove(validMoves.get(i), player);
-      scores[i] = evaluate(tempBoard);
+      scores[i] = calculateScore(tempBoard, player);
     }
 
     for (int i = 0; i < validMoves.size(); i++) {
@@ -63,8 +63,9 @@ public class Playground {
     List<Position> validMoves = new ArrayList<Position>();
     for (int y = 0; y < ROWS; y++) {
       for (int x = 0; x < COLUMNS; x++) {
-        if (validMove(x, y, player)) {
-          validMoves.add(new Position(x, y));
+        Position pos = new Position(x, y);
+        if (validMove(pos, player)) {
+          validMoves.add(pos);
         }
       }
     }
@@ -112,18 +113,18 @@ public class Playground {
     return false;
   }
 
-  public boolean validMove(int x, int y, Player player) {
-    return checkAllDirections(x, y, player, false);
+  public boolean validMove(Position pos, Player player) {
+    return checkAllDirections(pos, player, false);
   }
 
   // Kontrollerar om du får lägga på given plats
-  public boolean checkAllDirections(int x, int y, Player player, Boolean switchTiles) {
+  public boolean checkAllDirections(Position pos, Player player, Boolean switchTiles) {
     // x-led
     for (int ii = -1; ii <= 1; ii++) {
       // y-led
       for (int jj = -1; jj <= 1; jj++) {
         if (!(ii == 0 && jj == 0)) {
-          if (checkDirection(x, y, ii, jj, player, switchTiles))
+          if (checkDirection(pos.x, pos.y, ii, jj, player, switchTiles))
             return true;
         }
       }
@@ -132,15 +133,16 @@ public class Playground {
     return false;
   }
 
-  public int playMove(int x, int y, Player player) {
-    board[x][y] = player.tile;
-    checkAllDirections(x, y, player, true);
+  public int playMove(Position pos, Player player) {
+
+    board[pos.x][pos.y] = player.tile;
+    checkAllDirections(pos, player, true);
 
     int score = calculateScore(board, player);
     return score;
   }
 
-  private int calculateScore(int[][] scoreboard, Player player) {
+  public int calculateScore(int[][] scoreboard, Player player) {
     int score = 0;
     for (int y = 0; y < ROWS; y++) {
       for (int x = 0; x < COLUMNS; x++) {

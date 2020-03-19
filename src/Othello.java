@@ -72,12 +72,13 @@ public class Othello extends Application {
 
                 int x = (int) Math.floor(posX / 100);
                 int y = (int) Math.floor(posY / 100);
+                Position pos = new Position(x, y);
 
-                if (playground.validMove(x, y, playground.HumanPlayer)) {
-                    playground.playMove(x, y, playground.HumanPlayer);
+                if (playground.validMove(pos, playground.HumanPlayer)) {
+                    playground.playMove(pos, playground.HumanPlayer);
 
                     Position bestMove = playground.calcBestMove(playground.ComputerPlayer, LEVEL);
-                    playground.playMove(bestMove.x, bestMove.y, playground.ComputerPlayer);
+                    playground.playMove(bestMove, playground.ComputerPlayer);
 
                     drawBoard(gameBoard, playground);
                 }
