@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 public class OthelloTests {
   Playground game;
   Player player;
@@ -20,5 +22,12 @@ public class OthelloTests {
   public void testValidMove() {
     boolean valid = game.validMove(3, 4, player);
     assertEquals(false, valid);
+  }
+
+  @Test
+  public void AfterInit_CheckValidMoves() {
+    game.Init();
+    List<Position> list = game.GetValidMoves(game.board, game.HumanPlayer);
+    assertTrue(list != null);
   }
 }

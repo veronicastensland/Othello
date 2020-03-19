@@ -37,16 +37,38 @@ public class Playground {
     }
   }
 
-  public Position calcBestMove(Player player) {
+  public Position calcBestMove(Player player, int depth) {
     int bestx = 0;
     int besty = 0;
+    final int maxHeightGameTree = 10;
+    int[] scores;
     Position bestMove = new Position(bestx, besty);
 
-    // TODO GetValidMoves
-    List<Position> validMoves = new ArrayList<Position>();
-    // TODO bestMove = MiniMax(ValidMoves);
+    List<Position> validMoves = GetValidMoves(board, player);
+
+    for (int i = 0; i < validMoves.size(); i++) {
+      int[][] tempBoard = board;
+      playMove(validMoves.get(i), player);
+      scores[i] = evaluate(tempBoard);
+    }
+
+    for (int i = 0; i < validMoves.size(); i++) {
+      MiniMax.minimax(depth, i, true, scores, maxHeightGameTree);
+    }
 
     return bestMove;
+  }
+
+  List<Position> GetValidMoves(int[][] currentBoard, Player player) {
+    List<Position> validMoves = new ArrayList<Position>();
+    for (int y = 0; y < ROWS; y++) {
+      for (int x = 0; x < COLUMNS; x++) {
+        if (validMove(x, y, player)) {
+          validMoves.add(new Position(x, y));
+        }
+      }
+    }
+    return validMoves;
   }
 
   public boolean checkDirection(int x, int y, int xIncStep, int yIncStep, Player player, Boolean switchTiles) {
@@ -110,9 +132,24 @@ public class Playground {
     return false;
   }
 
-  public void playMove(int x, int y, Player player) {
+  public int playMove(int x, int y, Player player) {
     board[x][y] = player.tile;
     checkAllDirections(x, y, player, true);
+
+    int score = calculateScore(board, player);
+    return score;
+  }
+
+  private int calculateScore(int[][] scoreboard, Player player) {
+    int score = 0;
+    for (int y = 0; y < ROWS; y++) {
+      for (int x = 0; x < COLUMNS; x++) {
+        if (board[x][y] == player.tile) {
+          score++;
+        }
+      }
+    }
+    return score;
   }
 
 }

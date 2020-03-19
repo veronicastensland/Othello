@@ -1,12 +1,12 @@
 
-class MiniMax {
+public class MiniMax {
     // Returns the optimal value a maximizer can obtain.
     // depth is current depth in game tree.
     // nodeIndex is index of current node in scores[].
     // isMax is true if current move is of maximizer, else false
     // scores[] stores leaves of Game tree.
     // h is maximum height of Game tree
-    static int minimax(int depth, int nodeIndex, boolean isMax, int scores[], int h) {
+    public static int minimax(int depth, int nodeIndex, boolean isMax, int scores[], int h) {
         // Terminating condition. i.e leaf node is reached
         if (depth == h)
             return scores[nodeIndex];

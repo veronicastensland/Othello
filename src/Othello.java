@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 public class Othello extends Application {
     private static final int TILE_SIZE = 100;
+    private static int LEVEL = 1;
 
     public void drawBoard(Pane gameBoard, Playground playground) {
         for (int y = 0; y < Playground.ROWS; y++) {
@@ -75,7 +76,7 @@ public class Othello extends Application {
                 if (playground.validMove(x, y, playground.HumanPlayer)) {
                     playground.playMove(x, y, playground.HumanPlayer);
 
-                    Position bestMove = playground.calcBestMove(playground.ComputerPlayer);
+                    Position bestMove = playground.calcBestMove(playground.ComputerPlayer, LEVEL);
                     playground.playMove(bestMove.x, bestMove.y, playground.ComputerPlayer);
 
                     drawBoard(gameBoard, playground);
