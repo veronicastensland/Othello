@@ -33,8 +33,9 @@ public class OthelloTests {
   @Test
   public void AfterInit_ScoreBoard() {
     game.Init();
-    int score = game.calculateScore(game.board, game.HumanPlayer);
-    assertTrue(score == 2);
+    game.board[0][0] = game.ComputerPlayer.tile;
+    int score = game.calculateScore(game.board, game.ComputerPlayer);
+    assertTrue(score == 3);
   }
 
 }
