@@ -23,10 +23,10 @@ public class Playground {
     ComputerPlayer = new Player(Player.COMPUTER, Color.BLACK);
 
     // Startuppställning
-    board[3][4] = ComputerPlayer.current;
-    board[4][4] = HumanPlayer.current;
-    board[4][3] = ComputerPlayer.current;
-    board[3][3] = HumanPlayer.current;
+    board[3][4] = ComputerPlayer.tile;
+    board[4][4] = HumanPlayer.tile;
+    board[4][3] = ComputerPlayer.tile;
+    board[3][3] = HumanPlayer.tile;
   }
 
   public Player Opponent(Player player) {
@@ -37,11 +37,13 @@ public class Playground {
     }
   }
 
-  public int[] calcBestMove(Player player) {
+  public Position calcBestMove(Player player) {
     int bestx = 0;
     int besty = 0;
-    int bestMove[] = { bestx, besty };
+    Position bestMove = new Position(bestx, besty);
+
     // TODO GetValidMoves
+    List<Position> validMoves = new ArrayList<Position>();
     // TODO bestMove = MiniMax(ValidMoves);
 
     return bestMove;
@@ -54,7 +56,7 @@ public class Playground {
     boolean noWallHit = true;
     boolean opponentHit = false;
 
-    List<Tile> tilesToSwitch = new ArrayList<Tile>();
+    List<Position> tilesToSwitch = new ArrayList<Position>();
 
     while (noWallHit) {
       xOffset += xIncStep;
@@ -66,21 +68,21 @@ public class Playground {
         // kört in i väggen -> sluta
         return false;
       }
-      if (board[_x][_y] == Opponent(player).current) {
+      if (board[_x][_y] == Opponent(player).tile) {
         // brickan är av motståndaren -> fortsätt
         opponentHit = true;
-        tilesToSwitch.add(new Tile(_x, _y));
+        tilesToSwitch.add(new Position(_x, _y));
       }
-      if (board[_x][_y] == player.current && opponentHit) {
+      if (board[_x][_y] == player.tile && opponentHit) {
         // brickan är vår egen. Har vi vänt någon motståndares -> returnera true
         if (switchTiles) {
-          for (Tile tile : tilesToSwitch) {
-            board[tile.x][tile.y] = player.current;
+          for (Position tile : tilesToSwitch) {
+            board[tile.x][tile.y] = player.tile;
           }
         }
         return true;
       }
-      if (board[_x][_y] == 0 || board[_x][_y] == player.current && !opponentHit) {
+      if (board[_x][_y] == 0 || board[_x][_y] == player.tile && !opponentHit) {
         return false;
       }
     }
@@ -109,14 +111,8 @@ public class Playground {
   }
 
   public void playMove(int x, int y, Player player) {
-    if (player == HumanPlayer) {
-      // Vänd alla brickor som skall vändas
-      board[x][y] = player.current;
-      checkAllDirections(x, y, player, true);
-    } else {
-      int[] bestMove = calcBestMove(player);
-      board[bestMove[0]][bestMove[1]] = Opponent(player).current;
-    }
+    board[x][y] = player.tile;
+    checkAllDirections(x, y, player, true);
   }
 
 }

@@ -36,9 +36,9 @@ public class Othello extends Application {
                 if (playground.board[x][y] != Playground.NOTILE) {
 
                     Color playerColor = null;
-                    if (playground.board[x][y] == playground.HumanPlayer.current) {
+                    if (playground.board[x][y] == playground.HumanPlayer.tile) {
                         playerColor = playground.HumanPlayer.color;
-                    } else if (playground.board[x][y] == playground.ComputerPlayer.current) {
+                    } else if (playground.board[x][y] == playground.ComputerPlayer.tile) {
                         playerColor = playground.ComputerPlayer.color;
                     }
 
@@ -75,8 +75,8 @@ public class Othello extends Application {
                 if (playground.validMove(x, y, playground.HumanPlayer)) {
                     playground.playMove(x, y, playground.HumanPlayer);
 
-                    int[] bestMove = playground.calcBestMove(playground.ComputerPlayer);
-                    playground.playMove(bestMove[0], bestMove[1], playground.ComputerPlayer);
+                    Position bestMove = playground.calcBestMove(playground.ComputerPlayer);
+                    playground.playMove(bestMove.x, bestMove.y, playground.ComputerPlayer);
 
                     drawBoard(gameBoard, playground);
                 }
