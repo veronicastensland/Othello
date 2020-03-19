@@ -1,10 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
-
 import javafx.scene.paint.Color;
-
 import static org.junit.Assert.*;
-
 import java.util.List;
 
 public class OthelloTests {
@@ -30,6 +27,7 @@ public class OthelloTests {
     game.Init();
     List<Position> list = game.GetValidMoves(game.board, game.HumanPlayer);
     assertTrue(list != null);
+    assertTrue(list.size() == 4);
   }
 
   @Test

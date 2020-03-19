@@ -15,13 +15,13 @@ public class Playground {
 
   public Playground() {
     board = new int[COLUMNS][ROWS];
-  }
 
-  public void Init() {
     // Player-uppställning
     HumanPlayer = new Player(Player.HUMAN, Color.WHITE);
     ComputerPlayer = new Player(Player.COMPUTER, Color.BLACK);
+  }
 
+  public void Init() {
     // Startuppställning
     board[3][4] = ComputerPlayer.tile;
     board[4][4] = HumanPlayer.tile;
@@ -72,7 +72,7 @@ public class Playground {
     return validMoves;
   }
 
-  public boolean checkDirection(int x, int y, int xIncStep, int yIncStep, Player player, Boolean switchTiles) {
+  public boolean checkDirection(Position pos, int xIncStep, int yIncStep, Player player, Boolean switchTiles) {
 
     int xOffset = 0;
     int yOffset = 0;
@@ -84,8 +84,8 @@ public class Playground {
     while (noWallHit) {
       xOffset += xIncStep;
       yOffset += yIncStep;
-      int _x = x + xOffset;
-      int _y = y + yOffset;
+      int _x = pos.x + xOffset;
+      int _y = pos.y + yOffset;
 
       if ((_x > COLUMNS - 1) || (_x <= 0) || (_y > ROWS - 1) || (_y <= 0)) {
         // kört in i väggen -> sluta
@@ -124,7 +124,7 @@ public class Playground {
       // y-led
       for (int jj = -1; jj <= 1; jj++) {
         if (!(ii == 0 && jj == 0)) {
-          if (checkDirection(pos.x, pos.y, ii, jj, player, switchTiles))
+          if (checkDirection(pos, ii, jj, player, switchTiles))
             return true;
         }
       }
