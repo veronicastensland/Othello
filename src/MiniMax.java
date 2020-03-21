@@ -1,5 +1,18 @@
+import java.util.List;
 
 public class MiniMax {
+
+    // Return index of best move
+    public Position calculateBestMove(int depth, int validScores[], List<Position> validMoves) {
+        int h = MiniMax.log2(validScores.length);
+        int optimal = minimax(depth, 0, true, validScores, h);
+        for (int i = 0; i < validScores.length; i++) {
+            if (validScores[i] == optimal)
+                return validMoves.get(i);
+        }
+        return new Position(-1, -1);
+    }
+
     // Returns the optimal value a maximizer can obtain.
     // depth is current depth in game tree.
     // nodeIndex is index of current node in scores[].

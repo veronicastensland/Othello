@@ -32,9 +32,9 @@ public class Playground {
     board[4][3] = ComputerPlayer.tile;
     board[3][3] = HumanPlayer.tile;
 
-    for (int x = 1; x < 3; x++) {
-      board[x][4] = ComputerPlayer.tile;
-    }
+    // for (int x = 1; x < 3; x++) {
+    // board[x][4] = ComputerPlayer.tile;
+    // }
 
     // for (int y = 1; y < 3; y++) {
     // board[3][y] = ComputerPlayer.tile;
@@ -60,15 +60,8 @@ public class Playground {
     }
 
     MiniMax calc = new MiniMax();
-    int h = MiniMax.log2(validScores.length);
-    int optimal = calc.minimax(depth, 0, true, validScores, h);
-
-    for (int i = 0; i < validScores.length; i++) {
-      if (validScores[i] == optimal)
-        return validMoves.toArray(new Position[validMoves.size()])[i];
-    }
-
-    return new Position(-1, -1);
+    Position bestMove = calc.calculateBestMove(depth, validScores, validMoves);
+    return bestMove;
   }
 
   private int[][] DeepCopy(int[][] deepBoard) {

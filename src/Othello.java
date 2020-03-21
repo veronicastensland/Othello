@@ -24,8 +24,8 @@ import javafx.stage.Stage;
  */
 
 public class Othello extends Application {
-    private static final int TILE_SIZE = 100;
-    private static int LEVEL = 1;
+    private static final int TILE_SIZE = 80;
+    private static int DEPTH = 1;
 
     public void DrawBoard(Pane gameBoard, Playground playground) {
         for (int y = 0; y < Playground.ROWS; y++) {
@@ -78,7 +78,7 @@ public class Othello extends Application {
                     playground.PlayMove(playground.board, pos, playground.HumanPlayer);
 
                     // Beräkna dators bästa drag
-                    Position bestMove = playground.CalcBestMove(playground.ComputerPlayer, LEVEL);
+                    Position bestMove = playground.CalcBestMove(playground.ComputerPlayer, DEPTH);
                     playground.PlayMove(playground.board, bestMove, playground.ComputerPlayer);
 
                     DrawBoard(gameBoard, playground);
