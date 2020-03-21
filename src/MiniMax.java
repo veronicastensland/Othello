@@ -26,16 +26,5 @@ public class MiniMax {
     static int log2(int n) {
         return (n == 1) ? 0 : 1 + log2(n / 2);
     }
-    //
-    //// Driver code
-    //
-    // public static void main (String[] args) {
-    // // The number of elements in scores must be
-    // // a power of 2.
-    // int scores[] = {3, 5, 2, 9, 12, 5, 23, 23};
-    // int n = scores.length;
-    // int h = log2(n);
-    // int res = minimax(0, 0, true, scores, h);
-    // System.out.println( "The optimal value is : " +res);
-    // }
+
 }

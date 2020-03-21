@@ -27,7 +27,7 @@ public class Othello extends Application {
     private static final int TILE_SIZE = 100;
     private static int LEVEL = 1;
 
-    public void drawBoard(Pane gameBoard, Playground playground) {
+    public void DrawBoard(Pane gameBoard, Playground playground) {
         for (int y = 0; y < Playground.ROWS; y++) {
             for (int x = 0; x < Playground.COLUMNS; x++) {
                 Rectangle tile = new Rectangle(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -61,26 +61,27 @@ public class Othello extends Application {
         Playground playground = new Playground();
         playground.Init();
 
-        drawBoard(gameBoard, playground);
+        DrawBoard(gameBoard, playground);
 
         gameBoard.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent e) {
                 double posX = e.getX();
                 double posY = e.getY();
 
-                System.out.println("Pos x = " + posX + "\n" + "Pos y = " + posY);
-
                 int x = (int) Math.floor(posX / 100);
                 int y = (int) Math.floor(posY / 100);
+
+                System.out.println("Mouse[x = " + posX + ", y = " + posY + "]  Pos[x = " + x + ", y = " + y + "]");
                 Position pos = new Position(x, y);
 
-                if (playground.validMove(pos, playground.HumanPlayer)) {
-                    playground.playMove(playground.board, pos, playground.HumanPlayer);
+                if (playground.ValidMove(playground.board, pos, playground.HumanPlayer)) {
+                    playground.PlayMove(playground.board, pos, playground.HumanPlayer);
 
-                    Position bestMove = playground.calcBestMove(playground.ComputerPlayer, LEVEL);
-                    playground.playMove(playground.board, bestMove, playground.ComputerPlayer);
+                    // Beräkna dators bästa drag
+                    Position bestMove = playground.CalcBestMove(playground.ComputerPlayer, LEVEL);
+                    playground.PlayMove(playground.board, bestMove, playground.ComputerPlayer);
 
-                    drawBoard(gameBoard, playground);
+                    DrawBoard(gameBoard, playground);
                 }
             }
         });

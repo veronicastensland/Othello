@@ -25,10 +25,20 @@ public class Playground {
 
   public void Init() {
     // Startuppställning
+
+    // Standard
     board[3][4] = ComputerPlayer.tile;
     board[4][4] = HumanPlayer.tile;
     board[4][3] = ComputerPlayer.tile;
     board[3][3] = HumanPlayer.tile;
+
+    for (int x = 1; x < 3; x++) {
+      board[x][4] = ComputerPlayer.tile;
+    }
+
+    // for (int y = 1; y < 3; y++) {
+    // board[3][y] = ComputerPlayer.tile;
+    // }
   }
 
   public Player Opponent(Player player) {
@@ -39,26 +49,36 @@ public class Playground {
     }
   }
 
-  public Position calcBestMove(Player player, int depth) {
-    int bestx = 0;
-    int besty = 0;
-    final int maxHeightGameTree = 10;
-    Position bestMove = new Position(bestx, besty);
-
+  public Position CalcBestMove(Player player, int depth) {
     List<Position> validMoves = GetValidMoves(board, player);
-    int[] scores = new int[validMoves.size()];
+    int[] validScores = new int[validMoves.size()];
 
     for (int i = 0; i < validMoves.size(); i++) {
-      int[][] tempBoard = board;
-      playMove(validMoves.get(i), player);
-      scores[i] = calculateScore(tempBoard, player);
+      int[][] tempBoard = DeepCopy(board);
+      PlayMove(tempBoard, validMoves.get(i), player);
+      validScores[i] = CalculateScore(tempBoard, player);
     }
 
-    for (int i = 0; i < validMoves.size(); i++) {
-      miniMax.minimax(depth, i, true, scores, maxHeightGameTree);
+    MiniMax calc = new MiniMax();
+    int h = MiniMax.log2(validScores.length);
+    int optimal = calc.minimax(depth, 0, true, validScores, h);
+
+    for (int i = 0; i < validScores.length; i++) {
+      if (validScores[i] == optimal)
+        return validMoves.toArray(new Position[validMoves.size()])[i];
     }
 
-    return bestMove;
+    return new Position(-1, -1);
+  }
+
+  private int[][] DeepCopy(int[][] deepBoard) {
+    int[][] deepCopy = new int[COLUMNS][ROWS];
+    for (int y = 0; y < ROWS; y++) {
+      for (int x = 0; x < COLUMNS; x++) {
+        deepCopy[x][y] = deepBoard[x][y];
+      }
+    }
+    return deepCopy;
   }
 
   List<Position> GetValidMoves(int[][] currentBoard, Player player) {
@@ -66,7 +86,7 @@ public class Playground {
     for (int y = 0; y < ROWS; y++) {
       for (int x = 0; x < COLUMNS; x++) {
         Position pos = new Position(x, y);
-        if (validMove(pos, player)) {
+        if (ValidMove(currentBoard, pos, player)) {
           validMoves.add(pos);
         }
       }
@@ -74,7 +94,7 @@ public class Playground {
     return validMoves;
   }
 
-  public boolean checkDirection(int[][] scoreboard, Position pos, int xIncStep, int yIncStep, Player player,
+  public boolean CheckDirection(int[][] scoreboard, Position pos, int xIncStep, int yIncStep, Player player,
       Boolean switchTiles) {
 
     int xOffset = 0;
@@ -116,18 +136,18 @@ public class Playground {
     return false;
   }
 
-  public boolean validMove(Position pos, Player player) {
-    return checkAllDirections(pos, player, false);
+  public boolean ValidMove(int[][] playBoard, Position pos, Player player) {
+    return CheckAllDirections(playBoard, pos, player, false);
   }
 
   // Kontrollerar om du får lägga på given plats
-  public boolean checkAllDirections(int[][] scoreboard, Position pos, Player player, Boolean switchTiles) {
+  public boolean CheckAllDirections(int[][] playBoard, Position pos, Player player, Boolean switchTiles) {
     // x-led
     for (int ii = -1; ii <= 1; ii++) {
       // y-led
       for (int jj = -1; jj <= 1; jj++) {
         if (!(ii == 0 && jj == 0)) {
-          if (checkDirection(pos, ii, jj, player, switchTiles))
+          if (CheckDirection(playBoard, pos, ii, jj, player, switchTiles))
             return true;
         }
       }
@@ -136,20 +156,17 @@ public class Playground {
     return false;
   }
 
-  public int playMove(int[][] scoreboard, Position pos, Player player) {
-
-    scoreboard[pos.x][pos.y] = player.tile;
-    checkAllDirections(pos, player, true);
-
-    int score = calculateScore(board, player);
-    return score;
+  public int[][] PlayMove(int[][] playboard, Position pos, Player player) {
+    playboard[pos.x][pos.y] = player.tile;
+    CheckAllDirections(playboard, pos, player, true);
+    return playboard;
   }
 
-  public int calculateScore(int[][] scoreboard, Player player) {
+  public int CalculateScore(int[][] scoreboard, Player player) {
     int score = 0;
     for (int y = 0; y < ROWS; y++) {
       for (int x = 0; x < COLUMNS; x++) {
-        if (board[x][y] == player.tile) {
+        if (scoreboard[x][y] == player.tile) {
           score++;
         }
       }
