@@ -12,9 +12,11 @@ public class Playground {
   public Player ComputerPlayer;
 
   public int[][] board;
+  public MiniMax miniMax;
 
   public Playground() {
     board = new int[COLUMNS][ROWS];
+    miniMax = new MiniMax();
 
     // Player-uppställning
     HumanPlayer = new Player(Player.HUMAN, Color.WHITE);
@@ -53,7 +55,7 @@ public class Playground {
     }
 
     for (int i = 0; i < validMoves.size(); i++) {
-      MiniMax.minimax(depth, i, true, scores, maxHeightGameTree);
+      miniMax.minimax(depth, i, true, scores, maxHeightGameTree);
     }
 
     return bestMove;
@@ -72,7 +74,8 @@ public class Playground {
     return validMoves;
   }
 
-  public boolean checkDirection(Position pos, int xIncStep, int yIncStep, Player player, Boolean switchTiles) {
+  public boolean checkDirection(int[][] scoreboard, Position pos, int xIncStep, int yIncStep, Player player,
+      Boolean switchTiles) {
 
     int xOffset = 0;
     int yOffset = 0;
@@ -91,21 +94,21 @@ public class Playground {
         // kört in i väggen -> sluta
         return false;
       }
-      if (board[_x][_y] == Opponent(player).tile) {
+      if (scoreboard[_x][_y] == Opponent(player).tile) {
         // brickan är av motståndaren -> fortsätt
         opponentHit = true;
         tilesToSwitch.add(new Position(_x, _y));
       }
-      if (board[_x][_y] == player.tile && opponentHit) {
+      if (scoreboard[_x][_y] == player.tile && opponentHit) {
         // brickan är vår egen. Har vi vänt någon motståndares -> returnera true
         if (switchTiles) {
           for (Position tile : tilesToSwitch) {
-            board[tile.x][tile.y] = player.tile;
+            scoreboard[tile.x][tile.y] = player.tile;
           }
         }
         return true;
       }
-      if (board[_x][_y] == 0 || board[_x][_y] == player.tile && !opponentHit) {
+      if (scoreboard[_x][_y] == 0 || scoreboard[_x][_y] == player.tile && !opponentHit) {
         return false;
       }
     }
@@ -118,7 +121,7 @@ public class Playground {
   }
 
   // Kontrollerar om du får lägga på given plats
-  public boolean checkAllDirections(Position pos, Player player, Boolean switchTiles) {
+  public boolean checkAllDirections(int[][] scoreboard, Position pos, Player player, Boolean switchTiles) {
     // x-led
     for (int ii = -1; ii <= 1; ii++) {
       // y-led
@@ -133,9 +136,9 @@ public class Playground {
     return false;
   }
 
-  public int playMove(Position pos, Player player) {
+  public int playMove(int[][] scoreboard, Position pos, Player player) {
 
-    board[pos.x][pos.y] = player.tile;
+    scoreboard[pos.x][pos.y] = player.tile;
     checkAllDirections(pos, player, true);
 
     int score = calculateScore(board, player);

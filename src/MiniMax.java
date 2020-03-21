@@ -6,7 +6,7 @@ public class MiniMax {
     // isMax is true if current move is of maximizer, else false
     // scores[] stores leaves of Game tree.
     // h is maximum height of Game tree
-    public static int minimax(int depth, int nodeIndex, boolean isMax, int scores[], int h) {
+    public int minimax(int depth, int nodeIndex, boolean isMax, int scores[], int h) {
         // Terminating condition. i.e leaf node is reached
         if (depth == h)
             return scores[nodeIndex];
