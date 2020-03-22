@@ -8,24 +8,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-/*
-- TODO Implementera makeMove
-    Den ska göra ett drag och vända på alla brickor mellan brickan du lägger
-    och annan egen bricka, i horisontellt led, vertikalt led och snett (nio olika riktningar)
-- TODO Beräkna bästa drag enligt minimax-algoritmen
-- TDOO Implementera evaluateBoard
-    Största antal möjliga brickor att vända = bäst. Å andra sidan, kanske dåligt.
-    Man bör istället dela in dom i frontier discs och interior dics,
-    sedan också ge vissa platser på planen en högre score.
-    Hörn = superbra
-- TODO validMove
-    Håller reda på om draget är möjligt att göra.
-- Beginner, intermediate, or expert? *INTE PRIORITET*
- */
+//==============================================
+// Spelet Othella implementerat med minimax-algoritmen för att säkerställa bästa drag. 
+//==============================================
 
+// Klassen Othello startar spelet och ansvarar för grafiken
 public class Othello extends Application {
     private static final int TILE_SIZE = 80;
-    private static int DEPTH = 1;
+    private static final int WINDOWSIZE = 700;
 
     public void DrawBoard(Pane gameBoard, Playground playground) {
         for (int y = 0; y < Playground.ROWS; y++) {
@@ -53,6 +43,7 @@ public class Othello extends Application {
         }
     }
 
+    // JavaFx kräver en start-metod som tar stage som parameter
     @Override
     public void start(Stage stage) {
 
@@ -63,35 +54,32 @@ public class Othello extends Application {
 
         DrawBoard(gameBoard, playground);
 
+        // Datorn inväntar ett drag från den mänskliga spelaren
         gameBoard.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent e) {
                 double posX = e.getX();
                 double posY = e.getY();
 
-                int x = (int) Math.floor(posX / 100);
-                int y = (int) Math.floor(posY / 100);
+                int x = (int) Math.floor(posX / TILE_SIZE);
+                int y = (int) Math.floor(posY / TILE_SIZE);
 
                 System.out.println("Mouse[x = " + posX + ", y = " + posY + "]  Pos[x = " + x + ", y = " + y + "]");
                 Position pos = new Position(x, y);
 
-                if (playground.ValidMove(playground.board, pos, playground.HumanPlayer)) {
-                    playground.PlayMove(playground.board, pos, playground.HumanPlayer);
+                playground.TryPlayMove(gameBoard, playground, pos);
+                // playground.board[x][y] = playground.HumanPlayer.tile;
 
-                    // Beräkna dators bästa drag
-                    Position bestMove = playground.CalcBestMove(playground.ComputerPlayer, DEPTH);
-                    playground.PlayMove(playground.board, bestMove, playground.ComputerPlayer);
-
-                    DrawBoard(gameBoard, playground);
-                }
+                DrawBoard(gameBoard, playground);
             }
         });
 
         stage.setTitle("Othello");
-        Scene scene = new Scene(gameBoard, 800, 800, Color.GREEN);
+        Scene scene = new Scene(gameBoard, WINDOWSIZE, WINDOWSIZE, Color.GREEN);
         stage.setScene(scene);
         stage.show();
     }
 
+    // JavaFx förväntar sig även att main-metoden anropar launch.
     public static void main(String[] args) {
         launch(args);
     }
