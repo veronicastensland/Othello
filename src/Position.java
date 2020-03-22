@@ -6,4 +6,9 @@ public class Position {
     x = _x;
     y = _y;
   }
+
+  @Override
+  public String toString() {
+    return String.format("(" + x + ", " + y + ")");
+  }
 }

@@ -2,42 +2,92 @@ import java.util.List;
 
 public class MiniMax {
 
-    // Return index of best move
-    public Position calculateBestMove(int depth, int validScores[], List<Position> validMoves) {
-        int h = MiniMax.log2(validScores.length);
-        int optimal = minimax(depth, 0, true, validScores, h);
-        for (int i = 0; i < validScores.length; i++) {
-            if (validScores[i] == optimal)
-                return validMoves.get(i);
-        }
-        return new Position(-1, -1);
+    Playground playground;
+
+    public MiniMax(Playground pg) {
+        playground = pg;
     }
 
-    // Returns the optimal value a maximizer can obtain.
-    // depth is current depth in game tree.
-    // nodeIndex is index of current node in scores[].
-    // isMax is true if current move is of maximizer, else false
-    // scores[] stores leaves of Game tree.
-    // h is maximum height of Game tree
-    public int minimax(int depth, int nodeIndex, boolean isMax, int scores[], int h) {
+    // Beräkna bästa tänkbara drag för given spelare
+    public Position CalculateBestMove(Player player, int depth) {
+        int bestIndex = 0;
+        int bestScore = -1;
+        List<Position> validMoves = playground.GetValidMoves(playground.board, player);
+
+        for (int i = 0; i < validMoves.size(); i++) {
+            // Beräkna score för givet drag
+            int movescore = minimax(playground.board, validMoves.get(i), player, 0, depth, true);
+            if (movescore > bestScore) {
+                bestScore = movescore;
+                bestIndex = i;
+            }
+        }
+
+        return validMoves.get(bestIndex);
+    }
+
+    // Returns the optimal value a maximizer can obtain. depth is current depth in
+    // game tree. isMax is true if current move is of maximizer, else false
+    public int minimax(int[][] board, Position move, Player player, int h, int maxDepth, Boolean isMaximizingPlayer) {
+
+        int[][] tempBoard = DeepCopy(board);
+        playground.PlayMove(tempBoard, move, player);
+
         // Terminating condition. i.e leaf node is reached
-        if (depth == h)
-            return scores[nodeIndex];
+        if (h == maxDepth)
+            return CalculateScore(tempBoard, player);
 
         // If current move is maximizer, find the maximum attainable value
-        if (isMax)
-            return Math.max(minimax(depth + 1, nodeIndex * 2, false, scores, h),
-                    minimax(depth + 1, nodeIndex * 2 + 1, false, scores, h));
+        if (isMaximizingPlayer) {
+            int bestScore = -1;
+            List<Position> validMoves = playground.GetValidMoves(tempBoard, player);
 
+            for (Position m : validMoves) {
+                // Beräkna score för givet drag
+                int movescore = minimax(tempBoard, m, player, h + 1, maxDepth, !isMaximizingPlayer);
+                if (movescore > bestScore) {
+                    bestScore = movescore;
+                }
+            }
+            return bestScore;
+        }
         // Else (If current move is Minimizer), find the minimum attainable value
-        else
-            return Math.min(minimax(depth + 1, nodeIndex * 2, true, scores, h),
-                    minimax(depth + 1, nodeIndex * 2 + 1, true, scores, h));
+        else {
+            int bestScore = Playground.COLUMNS * Playground.ROWS;
+            List<Position> validMoves = playground.GetValidMoves(tempBoard, playground.Opponent(player));
+
+            for (Position m : validMoves) {
+                // Beräkna score för givet drag
+                int movescore = minimax(tempBoard, m, player, h + 1, maxDepth, !isMaximizingPlayer);
+                if (movescore < bestScore) {
+                    bestScore = movescore;
+                }
+            }
+            return bestScore;
+        }
     }
 
-    // A utility function to find Log n in base 2
-    static int log2(int n) {
-        return (n == 1) ? 0 : 1 + log2(n / 2);
+    // Kopiera arrayen med alla värden
+    private int[][] DeepCopy(int[][] deepBoard) {
+        int[][] deepCopy = new int[Playground.COLUMNS][Playground.ROWS];
+        for (int y = 0; y < Playground.ROWS; y++) {
+            for (int x = 0; x < Playground.COLUMNS; x++) {
+                deepCopy[x][y] = deepBoard[x][y];
+            }
+        }
+        return deepCopy;
     }
 
+    // Beräkna score för given spelare och board
+    public int CalculateScore(int[][] scoreboard, Player player) {
+        int score = 0;
+        for (int y = 0; y < Playground.ROWS; y++) {
+            for (int x = 0; x < Playground.COLUMNS; x++) {
+                if (scoreboard[x][y] == player.tile) {
+                    score++;
+                }
+            }
+        }
+        return score;
+    }
 }

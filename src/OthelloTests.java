@@ -1,7 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OthelloTests {
@@ -32,45 +31,46 @@ public class OthelloTests {
 
   @Test
   public void AfterInit_ScoreBoard() {
+    MiniMax miniMax = new MiniMax(game);
     game.Init();
     game.board[0][0] = game.ComputerPlayer.tile;
-    int score = game.CalculateScore(game.board, game.ComputerPlayer);
+    int score = miniMax.CalculateScore(game.board, game.ComputerPlayer);
     assertTrue(score == 3);
   }
 
   @Test
   public void Test_Minimax_Drivercode() {
     // The number of elements in scores must be a power of 2.
-    int scores[] = { 3, 5, 2, 9, 12, 5, 23, 23 };
-    int n = scores.length;
-    MiniMax calc = new MiniMax();
-    int h = MiniMax.log2(n);
-    int res = calc.minimax(0, 0, true, scores, h);
-    assertTrue(res == 12);
+    // int scores[] = { 3, 5, 2, 9, 12, 5, 23, 23 };
+    // int n = scores.length;
+    // MiniMax calc = new MiniMax(game);
+    // int h = MiniMax.log2(n);
+    // int res = calc.minimax(0, 0, true, scores, h);
+    // assertTrue(res == 12);
   }
 
   @Test
   public void Test_Minimax() {
     // Arrange
-    MiniMax sut = new MiniMax();
+    MiniMax sut = new MiniMax(game);
     int depth = 1;
     game.Init();
 
     // Act
-    List<Position> validMoves = game.GetValidMoves(game.board, game.HumanPlayer);
-    List<Integer> validScores = new ArrayList<Integer>();
+    int bestIndex = 0;
+    int bestScore = -1;
+    List<Position> validMoves = game.GetValidMoves(game.board, player);
 
-    for (Position pos : validMoves) {
-      int[][] tempBoard = game.PlayMove(game.board, pos, game.HumanPlayer);
-      int s = game.CalculateScore(tempBoard, game.HumanPlayer);
-      validScores.add(s);
+    for (int i = 0; i < validMoves.size(); i++) {
+      // Beräkna score för givet drag
+      int movescore = sut.minimax(game.board, validMoves.get(i), player, 0, depth, true);
+      if (movescore > bestScore) {
+        bestScore = movescore;
+        bestIndex = i;
+      }
     }
 
-    int scores[] = validScores.stream().mapToInt(i -> i).toArray();
-    int h = MiniMax.log2(scores.length);
-    int svarIndex = sut.minimax(depth, 0, true, validScores.stream().mapToInt(i -> i).toArray(), h);
-
-    Position bestMove = validMoves.toArray(new Position[validMoves.size()])[svarIndex];
+    Position bestMove = validMoves.get(bestIndex);
 
     // Assert
     assertTrue(bestMove.x == 3 && bestMove.y == 5);

@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 // Spelet Othella implementerat med minimax-algoritmen för att säkerställa bästa drag. 
 //==============================================
 
+// TODO Spelet hanterar inte att spelaren inte får lägga
+// TODO Vad är slutkriterie för spel?
+
 // Klassen Othello startar spelet och ansvarar för grafiken
 public class Othello extends Application {
     private static final int TILE_SIZE = 80;
@@ -66,7 +69,7 @@ public class Othello extends Application {
                 System.out.println("Mouse[x = " + posX + ", y = " + posY + "]  Pos[x = " + x + ", y = " + y + "]");
                 Position pos = new Position(x, y);
 
-                playground.TryPlayMove(gameBoard, playground, pos);
+                playground.TryPlayHumanMove(pos);
                 // playground.board[x][y] = playground.HumanPlayer.tile;
 
                 DrawBoard(gameBoard, playground);
