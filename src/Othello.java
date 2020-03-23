@@ -70,14 +70,21 @@ public class Othello extends Application {
                 System.out.println("Mouse[x = " + posX + ", y = " + posY + "]  Pos[x = " + x + ", y = " + y + "]");
                 Position pos = new Position(x, y);
 
-                playground.TryPlayHumanMove(pos);
                 // playground.board[x][y] = playground.HumanPlayer.tile;
 
-                DrawBoard(gameBoard, playground);
+                if (playground.ValidMove(playground.board, pos, playground.HumanPlayer)) {
+                    playground.PlayHumanMove(pos);
+                    DrawBoard(gameBoard, playground);
+                    playground.PlayComputerMove();
+                    DrawBoard(gameBoard, playground);
+                } else {
+                    System.out.println("Otillåtet drag");
+                }
             }
         });
 
         stage.setTitle("Othello");
+
         Scene scene = new Scene(gameBoard, WINDOWSIZE, WINDOWSIZE, Color.GREEN);
         stage.setScene(scene);
         stage.show();

@@ -147,16 +147,14 @@ public class Playground {
 
   // Spelaren har valt ett ställe att spela sin bricka. Kontrollera att det går
   // att spela draget och låt sedan datorn spela sitt drag.
-  public void TryPlayHumanMove(Position pos) {
-    if (ValidMove(board, pos, HumanPlayer)) {
-      // Spela spelarens drag
-      PlayMove(board, pos, HumanPlayer);
-      // Beräkna dators bästa drag
-      MiniMax miniMax = new MiniMax(this);
-      Position bestMove = miniMax.CalculateBestMove(ComputerPlayer, DEPTH);
-      PlayMove(board, bestMove, ComputerPlayer);
-    } else {
-      System.out.println("Otillåtet drag");
-    }
+  public void PlayComputerMove() {
+    // Beräkna dators bästa drag
+    MiniMax miniMax = new MiniMax(this);
+    Position bestMove = miniMax.CalculateBestMove(ComputerPlayer, DEPTH);
+    PlayMove(board, bestMove, ComputerPlayer);
+  }
+
+  public void PlayHumanMove(Position pos) {
+    board = PlayMove(board, pos, HumanPlayer);
   }
 }

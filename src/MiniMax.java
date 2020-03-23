@@ -3,9 +3,11 @@ import java.util.List;
 public class MiniMax {
 
     Playground playground;
+    static int calcCount = 0;
 
     public MiniMax(Playground pg) {
         playground = pg;
+        calcCount = 0;
     }
 
     // Beräkna bästa tänkbara drag för given spelare
@@ -26,7 +28,8 @@ public class MiniMax {
         }
 
         Position bestMove = validMoves.get(bestIndex);
-        System.out.println("\nBest score: " + bestScore + " Best move: " + bestMove);
+        System.out.println(
+                "\nBest score: " + bestScore + " Best move: " + bestMove + " Total moves investigated: " + calcCount);
 
         return bestMove;
     }
@@ -40,6 +43,7 @@ public class MiniMax {
 
         // Terminating condition. i.e leaf node is reached
         if (h == maxDepth) {
+            calcCount++;
             int score = CalculateScore(tempBoard, player);
             System.out.print(" (" + move.x + "," + move.y + "):" + score);
             return score;
