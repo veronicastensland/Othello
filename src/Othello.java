@@ -12,8 +12,9 @@ import javafx.stage.Stage;
 // Spelet Othella implementerat med minimax-algoritmen för att säkerställa bästa drag. 
 //==============================================
 
-// TODO Spelet hanterar inte att spelaren inte får lägga
 // TODO Vad är slutkriterie för spel?
+// TODO Sista kolumnen funkar ej x = 7
+// TODO Kanske bäst att göra spelarens drag först innan uträkning av datorns? => Annars tar det tid innan spelaren drag spelas också
 
 // Klassen Othello startar spelet och ansvarar för grafiken
 public class Othello extends Application {

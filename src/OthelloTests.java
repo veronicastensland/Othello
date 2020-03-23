@@ -11,20 +11,25 @@ public class OthelloTests {
   @Before
   public void Init() {
     game = new Playground();
-    // player = new Player(3, Color.PINK);
+    player = game.ComputerPlayer;
   }
 
   @Test
   public void testValidMove() {
+    // Arrange
     Position pos = new Position(3, 4);
+
+    // Act
     boolean valid = game.ValidMove(game.board, pos, player);
+
+    // Should not be possible if board is empty
     assertEquals(false, valid);
   }
 
   @Test
   public void AfterInit_GetValidMoves() {
     game.Init();
-    List<Position> list = game.GetValidMoves(game.board, game.HumanPlayer);
+    List<Position> list = game.GetValidMoves(game.board, player);
     assertTrue(list != null);
     assertTrue(list.size() == 4);
   }
@@ -34,19 +39,8 @@ public class OthelloTests {
     MiniMax miniMax = new MiniMax(game);
     game.Init();
     game.board[0][0] = game.ComputerPlayer.tile;
-    int score = miniMax.CalculateScore(game.board, game.ComputerPlayer);
+    int score = miniMax.CalculateScore(game.board, player);
     assertTrue(score == 3);
-  }
-
-  @Test
-  public void Test_Minimax_Drivercode() {
-    // The number of elements in scores must be a power of 2.
-    // int scores[] = { 3, 5, 2, 9, 12, 5, 23, 23 };
-    // int n = scores.length;
-    // MiniMax calc = new MiniMax(game);
-    // int h = MiniMax.log2(n);
-    // int res = calc.minimax(0, 0, true, scores, h);
-    // assertTrue(res == 12);
   }
 
   @Test
@@ -59,11 +53,11 @@ public class OthelloTests {
     // Act
     int bestIndex = 0;
     int bestScore = -1;
-    List<Position> validMoves = game.GetValidMoves(game.board, player);
+    List<Position> validMoves = game.GetValidMoves(game.board, game.ComputerPlayer);
 
     for (int i = 0; i < validMoves.size(); i++) {
       // Beräkna score för givet drag
-      int movescore = sut.minimax(game.board, validMoves.get(i), player, 0, depth, true);
+      int movescore = sut.minimax(game.board, validMoves.get(i), game.ComputerPlayer, 0, depth, true);
       if (movescore > bestScore) {
         bestScore = movescore;
         bestIndex = i;
@@ -73,6 +67,6 @@ public class OthelloTests {
     Position bestMove = validMoves.get(bestIndex);
 
     // Assert
-    assertTrue(bestMove.x == 3 && bestMove.y == 5);
+    assertTrue(bestMove.x == 3 && bestMove.y == 2);
   }
 }

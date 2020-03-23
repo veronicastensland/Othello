@@ -14,6 +14,8 @@ public class MiniMax {
         int bestScore = -1;
         List<Position> validMoves = playground.GetValidMoves(playground.board, player);
 
+        System.out.print("Calculate best move with depth " + depth + ":");
+
         for (int i = 0; i < validMoves.size(); i++) {
             // Beräkna score för givet drag
             int movescore = minimax(playground.board, validMoves.get(i), player, 0, depth, true);
@@ -23,7 +25,10 @@ public class MiniMax {
             }
         }
 
-        return validMoves.get(bestIndex);
+        Position bestMove = validMoves.get(bestIndex);
+        System.out.println("\nBest score: " + bestScore + " Best move: " + bestMove);
+
+        return bestMove;
     }
 
     // Returns the optimal value a maximizer can obtain. depth is current depth in
@@ -34,8 +39,11 @@ public class MiniMax {
         playground.PlayMove(tempBoard, move, player);
 
         // Terminating condition. i.e leaf node is reached
-        if (h == maxDepth)
-            return CalculateScore(tempBoard, player);
+        if (h == maxDepth) {
+            int score = CalculateScore(tempBoard, player);
+            System.out.print(" (" + move.x + "," + move.y + "):" + score);
+            return score;
+        }
 
         // If current move is maximizer, find the maximum attainable value
         if (isMaximizingPlayer) {

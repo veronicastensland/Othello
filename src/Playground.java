@@ -7,7 +7,7 @@ public class Playground {
   public static int COLUMNS = 8;
   public static int ROWS = 8;
   public static int NOTILE = 0;
-  public static int DEPTH = 1;
+  public static int DEPTH = 4;
 
   public Player HumanPlayer;
   public Player ComputerPlayer;
@@ -111,6 +111,9 @@ public class Playground {
 
   // Är draget (pos) möjligt att göra?
   public boolean ValidMove(int[][] playBoard, Position pos, Player player) {
+    if (pos.x >= COLUMNS || pos.x < 0 || pos.y >= ROWS || pos.y < 0)
+      return false;
+
     if (playBoard[pos.x][pos.y] == 0)
       return CheckAllDirections(playBoard, pos, player, false);
     else
@@ -152,6 +155,8 @@ public class Playground {
       MiniMax miniMax = new MiniMax(this);
       Position bestMove = miniMax.CalculateBestMove(ComputerPlayer, DEPTH);
       PlayMove(board, bestMove, ComputerPlayer);
+    } else {
+      System.out.println("Otillåtet drag");
     }
   }
 }
