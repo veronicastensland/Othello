@@ -56,11 +56,11 @@ public class Othello extends Application {
         }
     }
 
-    public void GameOverDialogue() {
+    public void GameOverDialogue(Player winner) {
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.WINDOW_MODAL);
-
-        VBox vbox = new VBox(new Text("Hi"), new Button("Ok."));
+        String w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
+        VBox vbox = new VBox(new Text("Game Over\n" + w), new Button("Ok"));
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(15));
 
@@ -121,7 +121,7 @@ public class Othello extends Application {
 
                 if (gameOver) {
                     gameBoard.setOnMouseClicked(null);
-                    GameOverDialogue();
+                    GameOverDialogue(playground.winner);
                 }
             }
         });

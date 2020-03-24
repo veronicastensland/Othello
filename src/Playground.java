@@ -11,6 +11,7 @@ public class Playground {
 
   public Player HumanPlayer;
   public Player ComputerPlayer;
+  public Player winner = null;
 
   public int[][] board;
   public MiniMax miniMax;
@@ -28,7 +29,12 @@ public class Playground {
     // Startuppställning
 
     // Standard
-    board[3][4] = ComputerPlayer.tile;
+    // board[3][4] = ComputerPlayer.tile;
+    // board[4][4] = HumanPlayer.tile;
+    // board[4][3] = ComputerPlayer.tile;
+    // board[3][3] = HumanPlayer.tile;
+
+    board[3][4] = HumanPlayer.tile;
     board[4][4] = HumanPlayer.tile;
     board[4][3] = ComputerPlayer.tile;
     board[3][3] = HumanPlayer.tile;
@@ -171,8 +177,10 @@ public class Playground {
           }
         }
       }
-      if (playerWon)
+      if (playerWon) {
+        winner = p == HumanPlayer.tile ? HumanPlayer : ComputerPlayer;
         return true;
+      }
     }
     return false;
   }
