@@ -1,23 +1,31 @@
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 //==============================================
 // Spelet Othella implementerat med minimax-algoritmen för att säkerställa bästa drag. 
 //==============================================
 
-// TODO Vad är slutkriterie för spel?
-// TODO Sista kolumnen funkar ej x = 7
-// TODO Kanske bäst att göra spelarens drag först innan uträkning av datorns? => Annars tar det tid innan spelaren drag spelas också
+// TODO Vad är slutkriterie för spel? Dialogruta och spela om.
+// TODO Sista kolumnen funkar kanske inte x = 7
 
 // Klassen Othello startar spelet och ansvarar för grafiken
 public class Othello extends Application {
+    Pane gameBoard;
+    Playground playground;
+
     private static final int TILE_SIZE = 60;
     private static final int WINDOWSIZE = 600;
     private boolean gameOver = false;
@@ -48,19 +56,56 @@ public class Othello extends Application {
         }
     }
 
+    public void GameOverDialogue() {
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+
+        VBox vbox = new VBox(new Text("Hi"), new Button("Ok."));
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(15));
+
+        dialogStage.setScene(new Scene(vbox));
+        dialogStage.show();
+    }
+
+    public boolean TryPlayMove(Position pos) {
+        if (playground.ValidMove(playground.board, pos, playground.HumanPlayer)) {
+            playground.PlayHumanMove(pos);
+            DrawBoard(gameBoard, playground);
+
+            if (playground.GameEnded()) {
+                return true;
+            }
+
+            if (playground.PossibleMovesExist(playground.ComputerPlayer)) {
+                playground.PlayComputerMove();
+                DrawBoard(gameBoard, playground);
+
+                if (playground.GameEnded()) {
+                    return true;
+                }
+            }
+        } else {
+            System.out.println("Otillåtet drag");
+        }
+        return false;
+    }
+
     // JavaFx kräver en start-metod som tar stage som parameter
     @Override
     public void start(Stage stage) {
 
         // Init
-        Pane gameBoard = new Pane();
-        Playground playground = new Playground();
+        gameBoard = new Pane();
+        playground = new Playground();
         playground.Init();
         DrawBoard(gameBoard, playground);
 
-        // Datorn inväntar ett drag från den mänskliga spelaren
+        // Eventhandler för musklick. Datorn inväntar ett drag från den mänskliga
+        // spelaren
         gameBoard.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent e) {
+                gameOver = false;
                 double posX = e.getX();
                 double posY = e.getY();
 
@@ -72,31 +117,11 @@ public class Othello extends Application {
 
                 // playground.board[x][y] = playground.HumanPlayer.tile;
 
-                if (playground.ValidMove(playground.board, pos, playground.HumanPlayer)) {
-                    playground.PlayHumanMove(pos);
-                    DrawBoard(gameBoard, playground);
+                gameOver = TryPlayMove(pos);
 
-                    if (playground.GameEnded()) {
-                        gameOver = true;
-                    }
-
-                    if (playground.PossibleMovesExist(playground.ComputerPlayer)) {
-                        playground.PlayComputerMove();
-                        DrawBoard(gameBoard, playground);
-
-                        if (playground.GameEnded()) {
-
-                            gameOver = true;
-                        }
-                    }
-                } else {
-                    System.out.println("Otillåtet drag");
-                }
-
-                // TODO Dialogbox Game Ended
                 if (gameOver) {
-
                     gameBoard.setOnMouseClicked(null);
+                    GameOverDialogue();
                 }
             }
         });
