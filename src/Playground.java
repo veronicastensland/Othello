@@ -17,7 +17,6 @@ public class Playground {
   public MiniMax miniMax;
 
   public Playground() {
-    board = new int[COLUMNS][ROWS];
     miniMax = new MiniMax(this);
 
     // Player-uppställning
@@ -28,17 +27,18 @@ public class Playground {
   public void Init() {
     // Startuppställning
 
-    // Standard
-    // board[3][4] = ComputerPlayer.tile;
-    // board[4][4] = HumanPlayer.tile;
-    // board[4][3] = ComputerPlayer.tile;
-    // board[3][3] = HumanPlayer.tile;
+    board = new int[COLUMNS][ROWS];
 
+    // Standard
     board[3][4] = ComputerPlayer.tile;
     board[4][4] = HumanPlayer.tile;
     board[4][3] = ComputerPlayer.tile;
-    board[3][3] = ComputerPlayer.tile;
-    board[4][5] = ComputerPlayer.tile;
+    board[3][3] = HumanPlayer.tile;
+
+    // board[3][4] = ComputerPlayer.tile;
+    // board[4][4] = HumanPlayer.tile;
+    // board[4][3] = HumanPlayer.tile;
+    // board[3][3] = HumanPlayer.tile;
 
     // for (int x = 1; x < 3; x++) {
     // board[x][4] = ComputerPlayer.tile;
@@ -99,10 +99,11 @@ public class Playground {
         tilesToSwitch.add(new Position(_x, _y));
       }
       if (scoreboard[_x][_y] == player.tile && opponentHit) {
-        // brickan är vår egen. Har vi vänt någon motståndares -> returnera true
+        // brickan är vår egen. Vänd våra samlade brickor och returnera true
         if (switchTiles) {
           for (Position tile : tilesToSwitch) {
             scoreboard[tile.x][tile.y] = player.tile;
+            // System.out.print(" S" + player.tile + ":" + tile);
           }
         }
         return true;
@@ -134,8 +135,9 @@ public class Playground {
       // y-led
       for (int jj = -1; jj <= 1; jj++) {
         if (!(ii == 0 && jj == 0)) {
-          if (CheckDirection(playBoard, pos, ii, jj, player, switchTiles))
+          if (CheckDirection(playBoard, pos, ii, jj, player, switchTiles)) {
             return true;
+          }
         }
       }
     }

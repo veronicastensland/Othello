@@ -1,9 +1,13 @@
+import javax.swing.JOptionPane;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -56,7 +60,7 @@ public class Othello extends Application {
         }
     }
 
-    public void GameOverDialogue(Player winner) {
+    public void GameOverDialogueFx(Player winner) {
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.WINDOW_MODAL);
         String w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
@@ -68,10 +72,29 @@ public class Othello extends Application {
         dialogStage.show();
     }
 
+    public void GameOverDialogueFxAlert(Player winner) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        String w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
+        alert.setTitle("Game Over1");
+        alert.setHeaderText("Game Over2");
+        alert.setContentText(w + " Vill du spela igen (J/N)?");
+        alert.showAndWait();
+    }
+
+    public void GameOverDialogueJOptionPane(Player winner) {
+        String w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
+        int yesno = JOptionPane.showConfirmDialog(null, "Game Over!\nVill du spela igen (J/N)?", w,
+                JOptionPane.YES_NO_OPTION);
+        if (yesno == 0) {
+            playground.Init();
+        } else {
+            // TODO Stäng fönster
+        }
+    }
+
     public boolean TryPlayMove(Position pos) {
         if (playground.ValidMove(playground.board, pos, playground.HumanPlayer)) {
             playground.PlayHumanMove(pos);
-            DrawBoard(gameBoard, playground);
 
             if (playground.GameEnded()) {
                 return true;
@@ -79,8 +102,6 @@ public class Othello extends Application {
 
             if (playground.PossibleMovesExist(playground.ComputerPlayer)) {
                 playground.PlayComputerMove();
-                DrawBoard(gameBoard, playground);
-
                 if (playground.GameEnded()) {
                     return true;
                 }
@@ -120,9 +141,11 @@ public class Othello extends Application {
                 gameOver = TryPlayMove(pos);
 
                 if (gameOver) {
-                    gameBoard.setOnMouseClicked(null);
-                    GameOverDialogue(playground.winner);
+                    // gameBoard.setOnMouseClicked(null);
+                    GameOverDialogueJOptionPane(playground.winner);
                 }
+
+                DrawBoard(gameBoard, playground);
             }
         });
 

@@ -45,7 +45,7 @@ public class MiniMax {
         if (h == maxDepth) {
             calcCount++;
             int score = CalculateScore(tempBoard, player);
-            System.out.print(" (" + move.x + "," + move.y + "):" + score);
+            System.out.print(" " + move + ":" + score);
             return score;
         }
 
