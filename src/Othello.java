@@ -18,8 +18,9 @@ import javafx.stage.Stage;
 
 // Klassen Othello startar spelet och ansvarar för grafiken
 public class Othello extends Application {
-    private static final int TILE_SIZE = 80;
-    private static final int WINDOWSIZE = 700;
+    private static final int TILE_SIZE = 60;
+    private static final int WINDOWSIZE = 600;
+    private boolean gameOver = false;
 
     public void DrawBoard(Pane gameBoard, Playground playground) {
         for (int y = 0; y < Playground.ROWS; y++) {
@@ -55,7 +56,6 @@ public class Othello extends Application {
         Pane gameBoard = new Pane();
         Playground playground = new Playground();
         playground.Init();
-
         DrawBoard(gameBoard, playground);
 
         // Datorn inväntar ett drag från den mänskliga spelaren
@@ -75,10 +75,28 @@ public class Othello extends Application {
                 if (playground.ValidMove(playground.board, pos, playground.HumanPlayer)) {
                     playground.PlayHumanMove(pos);
                     DrawBoard(gameBoard, playground);
-                    playground.PlayComputerMove();
-                    DrawBoard(gameBoard, playground);
+
+                    if (playground.GameEnded()) {
+                        gameOver = true;
+                    }
+
+                    if (playground.PossibleMovesExist(playground.ComputerPlayer)) {
+                        playground.PlayComputerMove();
+                        DrawBoard(gameBoard, playground);
+
+                        if (playground.GameEnded()) {
+
+                            gameOver = true;
+                        }
+                    }
                 } else {
                     System.out.println("Otillåtet drag");
+                }
+
+                // TODO Dialogbox Game Ended
+                if (gameOver) {
+
+                    gameBoard.setOnMouseClicked(null);
                 }
             }
         });

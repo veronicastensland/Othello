@@ -7,7 +7,7 @@ public class Playground {
   public static int COLUMNS = 8;
   public static int ROWS = 8;
   public static int NOTILE = 0;
-  public static int DEPTH = 4;
+  public static int DEPTH = 2;
 
   public Player HumanPlayer;
   public Player ComputerPlayer;
@@ -156,5 +156,28 @@ public class Playground {
 
   public void PlayHumanMove(Position pos) {
     board = PlayMove(board, pos, HumanPlayer);
+  }
+
+  public boolean GameEnded() {
+    for (int p = 1; p <= 2; p++) {
+      boolean playerWon = true;
+      for (int y = 0; y < ROWS; y++) {
+        if (playerWon) {
+          for (int x = 0; x < COLUMNS; x++) {
+            if (board[x][y] != p) {
+              playerWon = false;
+              break;
+            }
+          }
+        }
+      }
+      if (playerWon)
+        return true;
+    }
+    return false;
+  }
+
+  public boolean PossibleMovesExist(Player player) {
+    return GetValidMoves(board, player).size() > 0;
   }
 }
