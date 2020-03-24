@@ -34,10 +34,11 @@ public class Playground {
     // board[4][3] = ComputerPlayer.tile;
     // board[3][3] = HumanPlayer.tile;
 
-    board[3][4] = HumanPlayer.tile;
+    board[3][4] = ComputerPlayer.tile;
     board[4][4] = HumanPlayer.tile;
     board[4][3] = ComputerPlayer.tile;
-    board[3][3] = HumanPlayer.tile;
+    board[3][3] = ComputerPlayer.tile;
+    board[4][5] = ComputerPlayer.tile;
 
     // for (int x = 1; x < 3; x++) {
     // board[x][4] = ComputerPlayer.tile;
@@ -165,19 +166,25 @@ public class Playground {
   }
 
   public boolean GameEnded() {
+    // TODO Finns inga platser kvar
+
+    // Bara vita eller bara svarta?
     for (int p = 1; p <= 2; p++) {
-      boolean playerWon = true;
+      boolean checkPlayer = true;
       for (int y = 0; y < ROWS; y++) {
-        if (playerWon) {
+        if (checkPlayer) {
           for (int x = 0; x < COLUMNS; x++) {
-            if (board[x][y] != p) {
-              playerWon = false;
+            if (board[x][y] != p && board[x][y] != 0) {
+              checkPlayer = false;
               break;
             }
           }
+        } else {
+          break;
         }
       }
-      if (playerWon) {
+
+      if (checkPlayer) {
         winner = p == HumanPlayer.tile ? HumanPlayer : ComputerPlayer;
         return true;
       }
