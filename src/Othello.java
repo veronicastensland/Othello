@@ -1,21 +1,18 @@
-import javax.swing.JOptionPane;
+import java.util.Optional;
 
+import javax.swing.JOptionPane;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 //==============================================
@@ -60,25 +57,49 @@ public class Othello extends Application {
         }
     }
 
-    public void GameOverDialogueFx(Player winner) {
-        Stage dialogStage = new Stage();
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        String w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
-        VBox vbox = new VBox(new Text("Game Over\n" + w), new Button("Ok"));
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(15));
+    // public void GameOverDialogueFx(Player winner) {
+    //     Stage dialogStage = new Stage();
+    //     dialogStage.initModality(Modality.WINDOW_MODAL);
+    //     String w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
+    //     VBox vbox = new VBox(new Text("Game Over\n" + w), new Button("Ok"));
+    //     vbox.setAlignment(Pos.CENTER);
+    //     vbox.setPadding(new Insets(15));
 
-        dialogStage.setScene(new Scene(vbox));
-        dialogStage.show();
-    }
+    //     dialogStage.setScene(new Scene(vbox));
+    //     dialogStage.show();
+    // }
 
-    public void GameOverDialogueFxAlert(Player winner) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        String w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
+    public void GameOverDialogueFxAlert() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+
+        String w;
+        int humanTiles = playground.CountTiles(playground.HumanPlayer);
+        int computerTiles = playground.CountTiles(playground.ComputerPlayer);
+        
+        if (humanTiles > computerTiles)
+            playground.winner = playground.HumanPlayer;
+        else if (computerTiles > humanTiles)
+            playground.winner = playground.ComputerPlayer;
+        else
+            playground.winner = null;
+
+        
+        if (winner == null)
+            w = "Its a draw";
+        else
+            w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
+
         alert.setTitle("Game Over1");
-        alert.setHeaderText("Game Over2");
         alert.setContentText(w + " Vill du spela igen (J/N)?");
-        alert.showAndWait();
+        ButtonType okButton = new ButtonType("Ja", ButtonData.OK_DONE);
+        ButtonType noButton = new ButtonType("Nej", ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(okButton, noButton);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.orElse(noButton) == okButton) {
+            playground.Init();
+            DrawBoard(gameBoard, playground);    
+        }
     }
 
     public void GameOverDialogueJOptionPane(Player winner) {
@@ -136,16 +157,13 @@ public class Othello extends Application {
                 System.out.println("Mouse[x = " + posX + ", y = " + posY + "]  Pos[x = " + x + ", y = " + y + "]");
                 Position pos = new Position(x, y);
 
-                // playground.board[x][y] = playground.HumanPlayer.tile;
-
                 gameOver = TryPlayMove(pos);
+                DrawBoard(gameBoard, playground);
 
                 if (gameOver) {
-                    // gameBoard.setOnMouseClicked(null);
-                    GameOverDialogueJOptionPane(playground.winner);
+                    GameOverDialogueFxAlert();
+                    //GameOverDialogueJOptionPane(playground.winner);
                 }
-
-                DrawBoard(gameBoard, playground);
             }
         });
 

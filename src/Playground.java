@@ -4,10 +4,10 @@ import java.util.List;
 import javafx.scene.paint.Color;
 
 public class Playground {
-  public static int COLUMNS = 8;
-  public static int ROWS = 8;
-  public static int NOTILE = 0;
-  public static int DEPTH = 2;
+  public static final int COLUMNS = 8;
+  public static final int ROWS = 8;
+  public static final int NOTILE = 0;
+  public static final int DEPTH = 2;
 
   public Player HumanPlayer;
   public Player ComputerPlayer;
@@ -25,8 +25,8 @@ public class Playground {
   }
 
   public void Init() {
-    // Startuppställning
 
+    // Startuppställning
     board = new int[COLUMNS][ROWS];
 
     // Standard
@@ -35,18 +35,14 @@ public class Playground {
     board[4][3] = ComputerPlayer.tile;
     board[3][3] = HumanPlayer.tile;
 
-    // board[3][4] = ComputerPlayer.tile;
-    // board[4][4] = HumanPlayer.tile;
-    // board[4][3] = HumanPlayer.tile;
-    // board[3][3] = HumanPlayer.tile;
-
-    // for (int x = 1; x < 3; x++) {
-    // board[x][4] = ComputerPlayer.tile;
+    // Test
+    // for (int x = 0; x <= 7; x++) {
+    //   board[x][0] = HumanPlayer.tile;
     // }
-    // board[5][4] = ComputerPlayer.tile;
-
-    // for (int y = 1; y < 3; y++) {
-    // board[3][y] = ComputerPlayer.tile;
+    // for (int y = 1; y < 7; y++) {
+    //   for (int x = 0; x <= 7; x++) {
+    //     board[x][y] = ComputerPlayer.tile;
+    //   }
     // }
   }
 
@@ -58,7 +54,7 @@ public class Playground {
     }
   }
 
-  // Returnera tillåtna drag gör givet board och spelare
+  // Returnera tillåtna drag, givet board och spelare
   List<Position> GetValidMoves(int[][] currentBoard, Player player) {
     List<Position> validMoves = new ArrayList<Position>();
     for (int y = 0; y < ROWS; y++) {
@@ -103,7 +99,6 @@ public class Playground {
         if (switchTiles) {
           for (Position tile : tilesToSwitch) {
             scoreboard[tile.x][tile.y] = player.tile;
-            // System.out.print(" S" + player.tile + ":" + tile);
           }
         }
         return true;
@@ -128,21 +123,19 @@ public class Playground {
       return false;
   }
 
-  // Kontrollerar om du får lägga på given plats
+  // Kontrollera i alla riktningar. Om switchTiles är satt kommer alla brickor vändas också annars returneras 
+  // bara om draget är giltigt.
   public boolean CheckAllDirections(int[][] playBoard, Position pos, Player player, Boolean switchTiles) {
-    // x-led
-    for (int ii = -1; ii <= 1; ii++) {
-      // y-led
-      for (int jj = -1; jj <= 1; jj++) {
-        if (!(ii == 0 && jj == 0)) {
-          if (CheckDirection(playBoard, pos, ii, jj, player, switchTiles)) {
-            return true;
-          }
+    boolean validMove = false;
+    for (int x = -1; x <= 1; x++) {
+      for (int y = -1; y <= 1; y++) {
+        if (!(x == 0 && y == 0)) {
+          validMove = CheckDirection(playBoard, pos, x, y, player, switchTiles) || validMove;
         }
       }
     }
 
-    return false;
+    return validMove;
   }
 
   // Gör drag (pos) och vänd på alla brickor mellan brickan du lägger
@@ -168,7 +161,22 @@ public class Playground {
   }
 
   public boolean GameEnded() {
-    // TODO Finns inga platser kvar
+    // Finns inga platser kvar
+    boolean noPlaceLeft = true;
+    for (int y = 0; y < ROWS; y++) {
+      if (noPlaceLeft) {
+        for (int x = 0; x < COLUMNS; x++) {
+          if (board[x][y] == 0) {
+            noPlaceLeft = false;
+            break;
+          }
+        }
+      }
+      else {
+        break;
+      }
+    }
+    if (noPlaceLeft) return true;
 
     // Bara vita eller bara svarta?
     for (int p = 1; p <= 2; p++) {
@@ -196,5 +204,19 @@ public class Playground {
 
   public boolean PossibleMovesExist(Player player) {
     return GetValidMoves(board, player).size() > 0;
+  }
+
+  public int CountTiles(Player player) {
+    int count = 0;
+
+    for (int y = 0; y < ROWS; y++) {
+      for (int x = 0; x < COLUMNS; x++) {
+        if (board[x][y] == player.tile) {
+          count++;
+        }
+      }
+    }
+   
+    return count;
   }
 }
