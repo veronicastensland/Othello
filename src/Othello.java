@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 public class Othello extends Application {
     Pane gameBoard;
     Playground playground;
+    Stage myStage;
 
     private static final int TILE_SIZE = 60;
     private static final int WINDOWSIZE = 600;
@@ -57,39 +58,25 @@ public class Othello extends Application {
         }
     }
 
-    // public void GameOverDialogueFx(Player winner) {
-    //     Stage dialogStage = new Stage();
-    //     dialogStage.initModality(Modality.WINDOW_MODAL);
-    //     String w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
-    //     VBox vbox = new VBox(new Text("Game Over\n" + w), new Button("Ok"));
-    //     vbox.setAlignment(Pos.CENTER);
-    //     vbox.setPadding(new Insets(15));
-
-    //     dialogStage.setScene(new Scene(vbox));
-    //     dialogStage.show();
-    // }
-
     public void GameOverDialogueFxAlert() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
 
         String w;
         int humanTiles = playground.CountTiles(playground.HumanPlayer);
         int computerTiles = playground.CountTiles(playground.ComputerPlayer);
-        
-        if (humanTiles > computerTiles)
+
+        if (humanTiles > computerTiles) {
             playground.winner = playground.HumanPlayer;
-        else if (computerTiles > humanTiles)
+            w = "Human player wins";
+        } else if (computerTiles > humanTiles) {
             playground.winner = playground.ComputerPlayer;
-        else
+            w = "Computer player wins";
+        } else {
             playground.winner = null;
-
-        
-        if (winner == null)
             w = "Its a draw";
-        else
-            w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
+        }
 
-        alert.setTitle("Game Over1");
+        alert.setTitle("Game Over");
         alert.setContentText(w + " Vill du spela igen (J/N)?");
         ButtonType okButton = new ButtonType("Ja", ButtonData.OK_DONE);
         ButtonType noButton = new ButtonType("Nej", ButtonData.CANCEL_CLOSE);
@@ -98,7 +85,17 @@ public class Othello extends Application {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.orElse(noButton) == okButton) {
             playground.Init();
-            DrawBoard(gameBoard, playground);    
+            DrawBoard(gameBoard, playground);
+            alert.close();
+
+            myStage.setTitle("Othello (ny instans)");
+
+            // TODO Vi måste göra reset här på JavaFX-fönstret
+            Scene scene = new Scene(gameBoard, WINDOWSIZE, WINDOWSIZE, Color.GREEN);
+            myStage.setScene(scene);
+            myStage.show();
+        } else {
+
         }
     }
 
@@ -136,8 +133,7 @@ public class Othello extends Application {
     // JavaFx kräver en start-metod som tar stage som parameter
     @Override
     public void start(Stage stage) {
-
-        // Init
+        myStage = stage;
         gameBoard = new Pane();
         playground = new Playground();
         playground.Init();
@@ -162,16 +158,15 @@ public class Othello extends Application {
 
                 if (gameOver) {
                     GameOverDialogueFxAlert();
-                    //GameOverDialogueJOptionPane(playground.winner);
                 }
             }
         });
 
-        stage.setTitle("Othello");
+        myStage.setTitle("Othello");
 
         Scene scene = new Scene(gameBoard, WINDOWSIZE, WINDOWSIZE, Color.GREEN);
-        stage.setScene(scene);
-        stage.show();
+        myStage.setScene(scene);
+        myStage.show();
     }
 
     // JavaFx förväntar sig även att main-metoden anropar launch.

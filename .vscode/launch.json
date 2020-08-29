@@ -8,7 +8,7 @@
       "type": "java",
       "name": "Debug (Launch) - Current File",
       "request": "launch",
-      "vmArgs": "--module-path C:\\Programs\\Java\\javafx-sdk-11.0.2\\lib --add-modules javafx.controls,javafx.fxml",
+      "vmArgs": "--module-path \"${env:PATH_TO_FX}\" --add-modules javafx.controls,javafx.fxml",
       "mainClass": "${file}"
     }
   ]
