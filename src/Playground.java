@@ -24,7 +24,7 @@ public class Playground {
     ComputerPlayer = new Player(Player.COMPUTER, Color.BLACK);
   }
 
-  public void Init() {
+  public void InitBoard() {
 
     // Startuppställning
     board = new int[COLUMNS][ROWS];
@@ -37,12 +37,12 @@ public class Playground {
 
     // Test
     // for (int x = 0; x <= 7; x++) {
-    //   board[x][0] = HumanPlayer.tile;
+    // board[x][0] = HumanPlayer.tile;
     // }
     // for (int y = 1; y < 7; y++) {
-    //   for (int x = 0; x <= 7; x++) {
-    //     board[x][y] = ComputerPlayer.tile;
-    //   }
+    // for (int x = 0; x <= 7; x++) {
+    // board[x][y] = ComputerPlayer.tile;
+    // }
     // }
   }
 
@@ -123,8 +123,8 @@ public class Playground {
       return false;
   }
 
-  // Kontrollera i alla riktningar. Om switchTiles är satt kommer alla brickor vändas också annars returneras 
-  // bara om draget är giltigt.
+  // Kontrollera i alla riktningar. Om switchTiles är satt kommer alla brickor
+  // vändas också annars returneras bara om draget är giltigt.
   public boolean CheckAllDirections(int[][] playBoard, Position pos, Player player, Boolean switchTiles) {
     boolean validMove = false;
     for (int x = -1; x <= 1; x++) {
@@ -171,12 +171,12 @@ public class Playground {
             break;
           }
         }
-      }
-      else {
+      } else {
         break;
       }
     }
-    if (noPlaceLeft) return true;
+    if (noPlaceLeft)
+      return true;
 
     // Bara vita eller bara svarta?
     for (int p = 1; p <= 2; p++) {
@@ -216,7 +216,7 @@ public class Playground {
         }
       }
     }
-   
+
     return count;
   }
 }

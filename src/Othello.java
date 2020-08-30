@@ -67,10 +67,10 @@ public class Othello extends Application {
 
         if (humanTiles > computerTiles) {
             playground.winner = playground.HumanPlayer;
-            w = "Human player wins";
+            w = String.format("Human player wins with %2d / %2d", humanTiles, computerTiles);
         } else if (computerTiles > humanTiles) {
             playground.winner = playground.ComputerPlayer;
-            w = "Computer player wins";
+            w = String.format("Computer player wins with %2d / %2d", computerTiles, humanTiles);
         } else {
             playground.winner = null;
             w = "Its a draw";
@@ -84,7 +84,7 @@ public class Othello extends Application {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.orElse(noButton) == okButton) {
-            playground.Init();
+            playground.InitBoard();
             DrawBoard(gameBoard, playground);
             alert.close();
 
@@ -104,7 +104,7 @@ public class Othello extends Application {
         int yesno = JOptionPane.showConfirmDialog(null, "Game Over!\nVill du spela igen (J/N)?", w,
                 JOptionPane.YES_NO_OPTION);
         if (yesno == 0) {
-            playground.Init();
+            playground.InitBoard();
         } else {
             // TODO Stäng fönster
         }
@@ -136,7 +136,7 @@ public class Othello extends Application {
         myStage = stage;
         gameBoard = new Pane();
         playground = new Playground();
-        playground.Init();
+        playground.InitBoard();
         DrawBoard(gameBoard, playground);
 
         // Eventhandler för musklick. Datorn inväntar ett drag från den mänskliga
