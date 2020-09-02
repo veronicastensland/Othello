@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 // TODO Vad är slutkriterie för spel? Dialogruta och spela om.
 // TODO Sista kolumnen funkar kanske inte x = 7
+// TODO När humanplayer inte kan lägga måste datorn lägga flera ggr
 
 // Klassen Othello startar spelet och ansvarar för grafiken
 public class Othello extends Application {
