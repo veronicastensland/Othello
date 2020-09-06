@@ -4,23 +4,25 @@ public class MiniMax {
 
     Playground playground;
     static int calcCount = 0;
+    int maxDepth = 2;
 
-    public MiniMax(Playground pg) {
+    public MiniMax(Playground pg, int md) {
         playground = pg;
         calcCount = 0;
+        maxDepth = md;
     }
 
     // Beräkna bästa tänkbara drag för given spelare
-    public Position CalculateBestMove(Player player, int depth) {
+    public Position CalculateBestMove(Player player) {
         int bestIndex = 0;
         int bestScore = -1;
         List<Position> validMoves = playground.GetValidMoves(playground.board, player);
 
-        System.out.print("Calculate best move with depth " + depth + ":");
+        System.out.print("Calculate best move with depth " + maxDepth + ":");
 
         for (int i = 0; i < validMoves.size(); i++) {
             // Beräkna score för givet drag
-            int movescore = minimax(playground.board, validMoves.get(i), player, 0, depth, true);
+            int movescore = minimax(playground.board, validMoves.get(i), player, 0, true);
             if (movescore > bestScore) {
                 bestScore = movescore;
                 bestIndex = i;
@@ -36,7 +38,7 @@ public class MiniMax {
 
     // Returns the optimal value a maximizer can obtain. depth is current depth in
     // game tree. isMax is true if current move is of maximizer, else false
-    public int minimax(int[][] board, Position move, Player player, int h, int maxDepth, Boolean isMaximizingPlayer) {
+    public int minimax(int[][] board, Position move, Player player, int h, Boolean isMaximizingPlayer) {
 
         int[][] tempBoard = DeepCopy(board);
         playground.PlayMove(tempBoard, move, player);
@@ -56,7 +58,7 @@ public class MiniMax {
 
             for (Position m : validMoves) {
                 // Beräkna score för givet drag
-                int movescore = minimax(tempBoard, m, player, h + 1, maxDepth, !isMaximizingPlayer);
+                int movescore = minimax(tempBoard, m, player, h + 1, !isMaximizingPlayer);
                 if (movescore > bestScore) {
                     bestScore = movescore;
                 }
@@ -70,7 +72,7 @@ public class MiniMax {
 
             for (Position m : validMoves) {
                 // Beräkna score för givet drag
-                int movescore = minimax(tempBoard, m, player, h + 1, maxDepth, !isMaximizingPlayer);
+                int movescore = minimax(tempBoard, m, player, h + 1, !isMaximizingPlayer);
                 if (movescore < bestScore) {
                     bestScore = movescore;
                 }

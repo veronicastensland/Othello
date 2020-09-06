@@ -17,7 +17,7 @@ public class Playground {
   public MiniMax miniMax;
 
   public Playground() {
-    miniMax = new MiniMax(this);
+    miniMax = new MiniMax(this, DEPTH);
 
     // Player-uppställning
     HumanPlayer = new Player(Player.HUMAN, Color.WHITE);
@@ -147,12 +147,10 @@ public class Playground {
     return playboard;
   }
 
-  // Spelaren har valt ett ställe att spela sin bricka. Kontrollera att det går
-  // att spela draget och låt sedan datorn spela sitt drag.
+  // Beräkna dators bästa drag
   public void PlayComputerMove() {
-    // Beräkna dators bästa drag
-    MiniMax miniMax = new MiniMax(this);
-    Position bestMove = miniMax.CalculateBestMove(ComputerPlayer, DEPTH);
+    MiniMax miniMax = new MiniMax(this, DEPTH);
+    Position bestMove = miniMax.CalculateBestMove(ComputerPlayer);
     PlayMove(board, bestMove, ComputerPlayer);
   }
 
