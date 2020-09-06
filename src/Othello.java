@@ -16,11 +16,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 //==============================================
-// Spelet Othella implementerat med minimax-algoritmen för att säkerställa bästa drag. 
+// Spelet Othello implementerat med minimax-algoritmen för att säkerställa bästa drag. 
 //==============================================
 
-// TODO Vad är slutkriterie för spel? Dialogruta och spela om.
-// TODO När humanplayer inte kan lägga måste datorn lägga flera ggr
+// TODO Vad är kriteriet för gameover? 
+// TODO Dialogruta för att kunna spela om fungerar inte
 
 // Klassen Othello startar spelet och ansvarar för grafiken
 public class Othello extends Application {
@@ -119,10 +119,12 @@ public class Othello extends Application {
             }
 
             if (playground.PossibleMovesExist(playground.ComputerPlayer)) {
-                playground.PlayComputerMove();
-                if (playground.GameEnded()) {
-                    return true;
-                }
+                do {
+                    playground.PlayComputerMove();
+                    if (playground.GameEnded()) {
+                        return true;
+                    }
+                } while (!playground.PossibleMovesExist(playground.HumanPlayer));
             }
         } else {
             System.out.println("Otillåtet drag");
