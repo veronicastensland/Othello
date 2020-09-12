@@ -24,8 +24,11 @@ import javafx.stage.Stage;
 // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/
 //==============================================
 
-// TODO Vad är kriteriet för gameover? 
+// TODO Vad är kriteriet för gameover? (funkar inte riktigt)
+// - Ingen kan lägga ett giltigt move
+// - Alla brickor är lagda
 // TODO Dialogruta för att kunna spela om fungerar inte
+// - JavaFx måste undersökas mera
 
 // Klassen Othello startar spelet och ansvarar för grafiken
 public class Othello extends Application {
