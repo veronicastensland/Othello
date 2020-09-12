@@ -7,19 +7,17 @@ public class Playground {
   public static final int COLUMNS = 8;
   public static final int ROWS = 8;
   public static final int NOTILE = 0;
-  public static final int DEPTH = 2;
+  public static final int DEPTH = 3;
+  public static final Boolean USEPRUNING = false;
+  public static final Boolean SHOWMOVES = true;
 
   public Player HumanPlayer;
   public Player ComputerPlayer;
   public Player winner = null;
 
   public int[][] board;
-  public MiniMax miniMax;
 
   public Playground() {
-    miniMax = new MiniMax(this, DEPTH);
-
-    // Player-uppställning
     HumanPlayer = new Player(Player.HUMAN, Color.WHITE);
     ComputerPlayer = new Player(Player.COMPUTER, Color.BLACK);
   }
@@ -149,9 +147,10 @@ public class Playground {
 
   // Beräkna dators bästa drag
   public void PlayComputerMove() {
-    MiniMax miniMax = new MiniMax(this, DEPTH);
+    MiniMax miniMax = new MiniMax(this, DEPTH, USEPRUNING, SHOWMOVES);
     Position bestMove = miniMax.CalculateBestMove(ComputerPlayer);
     PlayMove(board, bestMove, ComputerPlayer);
+    System.out.println("Human: " + CountTiles(HumanPlayer) + ", Computer: " + CountTiles(ComputerPlayer));
   }
 
   public void PlayHumanMove(Position pos) {

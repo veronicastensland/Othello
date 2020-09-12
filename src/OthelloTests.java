@@ -40,7 +40,7 @@ public class OthelloTests {
 
   @Test
   public void AfterInit_ScoreBoard() {
-    MiniMax miniMax = new MiniMax(game, maxDepth);
+    MiniMax miniMax = new MiniMax(game, maxDepth, true, true);
     game.InitBoard();
     game.board[0][0] = game.ComputerPlayer.tile;
     int score = miniMax.CalculateScore(game.board, player);
@@ -50,7 +50,7 @@ public class OthelloTests {
   @Test
   public void Test_Minimax() {
     // Arrange
-    MiniMax sut = new MiniMax(game, maxDepth);
+    MiniMax sut = new MiniMax(game, maxDepth, true, true);
     game.InitBoard();
 
     // Act
@@ -60,7 +60,8 @@ public class OthelloTests {
 
     for (int i = 0; i < validMoves.size(); i++) {
       // Beräkna score för givet drag
-      int movescore = sut.minimax(game.board, validMoves.get(i), game.ComputerPlayer, 0, true);
+      int movescore = sut.minimax(game.board, validMoves.get(i), game.ComputerPlayer, 0, true, -1,
+          Playground.COLUMNS * Playground.ROWS);
       if (movescore > bestScore) {
         bestScore = movescore;
         bestIndex = i;

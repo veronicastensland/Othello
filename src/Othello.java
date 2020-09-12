@@ -17,6 +17,11 @@ import javafx.stage.Stage;
 
 //==============================================
 // Spelet Othello implementerat med minimax-algoritmen för att säkerställa bästa drag. 
+//
+// https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-1-introduction/
+// https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-2-evaluation-function/
+// https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/
+// https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/
 //==============================================
 
 // TODO Vad är kriteriet för gameover? 
