@@ -8,8 +8,8 @@ public class Playground {
   public static final int ROWS = 8;
   public static final int NOTILE = 0;
   public static final int DEPTH = 3;
-  public static final Boolean USEPRUNING = false;
-  public static final Boolean SHOWMOVES = true;
+  public static final Boolean USEPRUNING = true;
+  public static final Boolean SHOWMOVES = false;
 
   public Player HumanPlayer;
   public Player ComputerPlayer;

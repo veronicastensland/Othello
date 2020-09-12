@@ -15,6 +15,9 @@ public class MiniMax {
         maxDepth = md;
         pruning = usePruning;
         showMoves = debugShowMoves;
+
+        calcCount = 0;
+        prunes = 0;
     }
 
     // Beräkna bästa tänkbara drag för given spelare
