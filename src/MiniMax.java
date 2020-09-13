@@ -125,6 +125,13 @@ public class MiniMax {
         for (int y = 0; y < Playground.ROWS; y++) {
             for (int x = 0; x < Playground.COLUMNS; x++) {
                 if (scoreboard[x][y] == player.tile) {
+                    // Ge mer score för kant eller hörn
+                    if (x == 0 || x == Playground.COLUMNS - 1) {
+                        score += 2;
+                    }
+                    if (y == 0 || y == Playground.ROWS - 1) {
+                        score += 2;
+                    }
                     score++;
                 }
             }
