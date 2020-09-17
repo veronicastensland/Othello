@@ -7,7 +7,7 @@ public class Playground {
   public static final int COLUMNS = 8;
   public static final int ROWS = 8;
   public static final int NOTILE = 0;
-  public static final int DEPTH = 3;
+  public static final int DEPTH = 5;
   public static final Boolean USEPRUNING = true;
   public static final Boolean SHOWMOVES = false;
 

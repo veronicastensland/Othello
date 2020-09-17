@@ -107,17 +107,6 @@ public class Othello extends Application {
         }
     }
 
-    public void GameOverDialogueJOptionPane(Player winner) {
-        String w = winner == playground.HumanPlayer ? "Human player wins" : "Computer player wins";
-        int yesno = JOptionPane.showConfirmDialog(null, "Game Over!\nVill du spela igen (J/N)?", w,
-                JOptionPane.YES_NO_OPTION);
-        if (yesno == 0) {
-            playground.InitBoard();
-        } else {
-            // TODO Stäng fönster
-        }
-    }
-
     public boolean TryPlayMove(Position pos) {
         if (playground.ValidMove(playground.board, pos, playground.HumanPlayer)) {
             playground.PlayHumanMove(pos);
