@@ -6,7 +6,13 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Debug (Launch) - Current File",
+      "name": "Launch Java Program",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Debug (FX) - Current File",
       "request": "launch",
       "vmArgs": "--module-path \"${env:PATH_TO_FX}\" --add-modules javafx.controls,javafx.fxml",
       "mainClass": "${file}"
