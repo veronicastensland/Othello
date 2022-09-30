@@ -11,7 +11,12 @@ Bra tutorials:
 
 ## Setup VSCode - Java/JavaFX
 
-Installera JAVA och sätt JAVA_HOME
+Installera JAVA samt verktyg i VSCode och sätt systemvariabeln JAVA_HOME så att den pekar på javainstallationen.
+
+Kika i konfigurationsfilerna
+launch.json
+settings.json
+för att se var och hur du bör inkludera de olika biblioteken.
 
 Installera JavaFX från openjfx.io. Sätt PATH_TO_FX till katalogen där du installerade fx och lägg till 'lib' i sökvägen
 
