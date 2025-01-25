@@ -11,17 +11,30 @@ Bra tutorials:
 
 ## Setup VSCode - Java/JavaFX
 
-Installera JAVA samt verktyg i VSCode och sätt systemvariabeln JAVA_HOME så att den pekar på javainstallationen.
+Installera JAVA samt verktyg i VSCode och sätt systemvariabeln JAVA_HOME så att den pekar på javainstallationen. Kika i konfigurationsfilerna:
 
-Kika i konfigurationsfilerna
-launch.json
-settings.json
+- launch.json
+- settings.json
+
 för att se var och hur du bör inkludera de olika biblioteken.
 
-Installera JavaFX från openjfx.io. Sätt PATH_TO_FX till katalogen där du installerade fx och lägg till 'lib' i sökvägen
+Installera JavaFX från https://gluonhq.com/products/javafx/. Sätt PATH_TO_FX till katalogen där du installerade fx och lägg till 'lib' i sökvägen
 
-Ex: PATH_TO_FX C:\tools\javafx-sdk-18.0.1\lib
-Modifiera launch.json "vmArgs": "--module-path \"${env:PATH_TO_FX}\" --add-modules javafx.controls,javafx.fxml"
+```
+# Powershell:
+$PATH_TO_FX="C:\Programs\java\javafx-sdk-21.0.1\lib"
+
+# Bash
+export $PATH_TO_FX=/usr/local/lib/javafx/javafx-sdk-21.0.1
+```
+
+Observera att variablerna kan sättas på systemnivå och att man bör kontrollera vad $PATH_TO_FX verkligen är satt till.
+
+Modifiera launch.json
+
+```
+"vmArgs": "--module-path \"${env:PATH_TO_FX}\" --add-modules javafx.controls,javafx.fxml"
+```
 
 Möjligt behöver även settings.json modifieras så att den innehåller sökvägen till alla fx-moduler
 
